@@ -1,8 +1,8 @@
-
 import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import CardGallery from "@/components/blocks/CardGallery";
+import FallbackImage from "@/components/ui/FallbackImage";
 import { getCategoryBySlug, getProductsByCategory } from "@/data/products";
 
 const CategoryPage = () => {
@@ -52,7 +52,7 @@ const CategoryPage = () => {
 
           {/* Category Hero Image */}
           <div className="mb-12">
-            <img 
+            <FallbackImage 
               src={category.image} 
               alt={category.name}
               className="w-full h-64 md:h-80 object-cover rounded-lg shadow-md"

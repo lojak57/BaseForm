@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { toast } from "@/components/ui/sonner";
 
@@ -19,6 +18,7 @@ export type Product = {
   description: string;
   defaultImages: string[];
   fabrics: Fabric[];
+  hasFabricSelection?: boolean;
 };
 
 export type CartItem = {

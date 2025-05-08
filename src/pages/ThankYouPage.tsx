@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
@@ -10,9 +9,11 @@ const ThankYouPage = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     
-    // Clear the cart on successful order
+    // Clear the cart on successful order - run only once when component mounts
     clearCart();
-  }, [clearCart]);
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty dependency array ensures this runs only once
 
   return (
     <Layout>

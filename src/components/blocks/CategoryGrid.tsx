@@ -1,6 +1,6 @@
-
 import { Link } from "react-router-dom";
 import { categories } from "@/data/products";
+import FallbackImage from "@/components/ui/FallbackImage";
 
 const CategoryGrid = () => {
   return (
@@ -16,21 +16,23 @@ const CategoryGrid = () => {
             <Link 
               key={category.id} 
               to={`/category/${category.slug}`}
-              className="product-card group rounded-lg overflow-hidden relative"
+              className="product-card group rounded-lg overflow-hidden relative shadow-md hover:shadow-lg transition-shadow"
             >
-              <div className="relative h-64 md:h-80 overflow-hidden">
-                <img 
+              {/* Image section - top 50% */}
+              <div className="relative h-48 overflow-hidden">
+                <FallbackImage 
                   src={category.image} 
                   alt={category.name} 
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-darkText/30 flex items-end p-6">
-                  <div className="bg-ivory/95 w-full text-center py-3 px-4 rounded-md">
-                    <h3 className="font-playfair text-xl text-darkText">{category.name}</h3>
-                    <p className="text-darkGray text-sm mt-1">{category.description}</p>
-                  </div>
-                </div>
               </div>
+              
+              {/* Text section - bottom 50% */}
+              <div className="bg-ivory p-4 text-center">
+                <h3 className="font-playfair text-xl text-darkText">{category.name}</h3>
+                <p className="text-darkGray text-sm mt-1">{category.description}</p>
+              </div>
+              
               {/* Stitched border effect on hover */}
               <div className="absolute inset-0 border-[3px] border-dashed border-threadGold/0 rounded-lg transition-all duration-300 group-hover:border-threadGold/50 pointer-events-none"></div>
             </Link>

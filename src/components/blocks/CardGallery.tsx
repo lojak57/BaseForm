@@ -1,6 +1,6 @@
-
 import { Link } from "react-router-dom";
 import { Product } from "@/context/CartContext";
+import FallbackImage from "@/components/ui/FallbackImage";
 
 interface CardGalleryProps {
   title?: string;
@@ -25,26 +25,25 @@ const CardGallery = ({ title, subtitle, products, category }: CardGalleryProps) 
             <Link 
               key={product.id} 
               to={`/product/${product.slug}`}
-              className="product-card group rounded-lg overflow-hidden hover:-translate-y-1 transition-all duration-300"
+              className="product-card group rounded-lg overflow-hidden shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
             >
-              <div className="relative aspect-[3/4] overflow-hidden">
-                <img 
+              {/* Image section - top 50% */}
+              <div className="relative h-64 overflow-hidden">
+                <FallbackImage 
                   src={product.defaultImages[0]} 
                   alt={product.name} 
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-darkText/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-6">
-                  <div className="bg-ivory/95 w-full text-center py-3 px-4 rounded-md transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                    <span className="btn-text">View Details</span>
-                  </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-darkText/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-4">
+                  <span className="btn-text text-white">View Details</span>
                 </div>
               </div>
-              <div className="p-4 text-center">
+              
+              {/* Text section - bottom 50% */}
+              <div className="bg-ivory p-4 text-center">
                 <h3 className="font-playfair text-xl text-darkText">{product.name}</h3>
                 <p className="text-threadGold font-medium mt-2">${product.price}</p>
               </div>
-              {/* Add subtle shadow effect on hover */}
-              <div className="absolute inset-0 shadow-product opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
             </Link>
           ))}
         </div>

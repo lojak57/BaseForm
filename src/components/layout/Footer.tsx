@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { categories } from "@/data/products";
 
@@ -88,6 +87,7 @@ const Footer = () => {
             <Link to="/privacy" className="hover:text-threadGold transition-colors">Privacy Policy</Link>
             <Link to="/terms" className="hover:text-threadGold transition-colors">Terms of Service</Link>
             <Link to="/shipping" className="hover:text-threadGold transition-colors">Shipping & Returns</Link>
+            <Link to="/admin/login" className="hover:text-threadGold transition-colors">Admin</Link>
           </div>
         </div>
       </div>

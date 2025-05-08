@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Placeholder Images</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .controls {
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 15px;
+            background: #4a5568;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input, select {
+            padding: 8px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Placeholder Image Generator</h1>
+    
+    <div class="controls">
+        <label for="text">Text:</label>
+        <input type="text" id="text" value="Handcrafted Bag" style="width: 200px;">
+        
+        <label for="bgColor">Background:</label>
+        <input type="color" id="bgColor" value="#e9e7df">
+        
+        <label for="textColor">Text:</label>
+        <input type="color" id="textColor" value="#8b7355">
+        
+        <button id="generate">Generate</button>
+        <button id="download">Download</button>
+    </div>
+    
+    <canvas id="canvas" width="800" height="600"></canvas>
+    
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const textInput = document.getElementById('text');
+        const bgColorInput = document.getElementById('bgColor');
+        const textColorInput = document.getElementById('textColor');
+        const generateBtn = document.getElementById('generate');
+        const downloadBtn = document.getElementById('download');
+        
+        function generateImage() {
+            const text = textInput.value;
+            const bgColor = bgColorInput.value;
+            const textColor = textColorInput.value;
+            
+            // Fill background
+            ctx.fillStyle = bgColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw a subtle pattern
+            ctx.fillStyle = adjustColor(bgColor, -10);
+            for(let i = 0; i < canvas.width; i += 20) {
+                for(let j = 0; j < canvas.height; j += 20) {
+                    if((i + j) % 40 === 0) {
+                        ctx.fillRect(i, j, 10, 10);
+                    }
+                }
+            }
+            
+            // Add text
+            ctx.fillStyle = textColor;
+            ctx.font = 'bold 48px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // Break text into lines if needed
+            const words = text.split(' ');
+            let lines = [];
+            let currentLine = words[0];
+            
+            for(let i = 1; i < words.length; i++) {
+                const testLine = currentLine + ' ' + words[i];
+                const metrics = ctx.measureText(testLine);
+                if(metrics.width < canvas.width - 100) {
+                    currentLine = testLine;
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            
+            // Draw each line
+            const lineHeight = 60;
+            const startY = canvas.height/2 - (lines.length - 1) * lineHeight/2;
+            
+            lines.forEach((line, index) => {
+                ctx.fillText(line, canvas.width/2, startY + index * lineHeight);
+            });
+            
+            // Add border
+            ctx.strokeStyle = adjustColor(bgColor, -20);
+            ctx.lineWidth = 20;
+            ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+        }
+        
+        function adjustColor(color, amount) {
+            const hex = color.replace('#', '');
+            const r = Math.max(0, Math.min(255, parseInt(hex.substring(0, 2), 16) + amount));
+            const g = Math.max(0, Math.min(255, parseInt(hex.substring(2, 4), 16) + amount));
+            const b = Math.max(0, Math.min(255, parseInt(hex.substring(4, 6), 16) + amount));
+            
+            return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+        }
+        
+        function downloadImage() {
+            const link = document.createElement('a');
+            link.download = `${textInput.value.toLowerCase().replace(/\s+/g, '-')}.jpg`;
+            link.href = canvas.toDataURL('image/jpeg', 0.9);
+            link.click();
+        }
+        
+        // Initial generation
+        generateImage();
+        
+        // Event listeners
+        generateBtn.addEventListener('click', generateImage);
+        downloadBtn.addEventListener('click', downloadImage);
+    </script>
+</body>
+</html> 

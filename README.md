@@ -1,73 +1,109 @@
-# Welcome to your Lovable project
+# VCSEUES PURSES E-Commerce Website
 
-## Project info
+An e-commerce website for handcrafted bags built with React, TypeScript, Vite, and Tailwind CSS.
 
-**URL**: https://lovable.dev/projects/18a340bf-21fd-437c-af2b-3aeea03ae0a6
+## Features
 
-## How can I edit this code?
+- Responsive design that works well on all devices
+- Product catalog with multiple categories
+- Detailed product pages with fabric selection options
+- Shopping cart functionality
+- Checkout process
+- Image gallery with fabric variations
+- Admin dashboard for product management
 
-There are several ways of editing your application.
+## Product Images
 
-**Use Lovable**
+The website features high-quality product images for:
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/18a340bf-21fd-437c-af2b-3aeea03ae0a6) and start prompting.
+- Crossbody bags
+- Tote bags
+- Clutch purses
+- Mini backpacks
 
-Changes made via Lovable will be committed automatically to this repo.
+Each product has multiple fabric options with corresponding images. All images are sourced from Unsplash under their free-to-use license.
 
-**Use your preferred IDE**
+### Image Structure
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+Images are organized in the following directories:
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- `/public/images/products/{category}/{product-name}-{fabric}.jpg` - Product images
+- `/public/images/swatches/{fabric}.jpg` - Fabric swatches
+- `/public/images/categories/{category}.jpg` - Category images
 
-Follow these steps:
+## Development
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Prerequisites
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+- Node.js (v16 or higher)
+- npm
 
-# Step 3: Install the necessary dependencies.
-npm i
+### Setup
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+1. Clone the repository
+2. Install dependencies
+```bash
+npm install
+```
+3. Start the development server
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### Image Generation
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+The realistic product images were implemented using the `download-images.js` script, which:
 
-**Use GitHub Codespaces**
+1. Creates necessary image directories
+2. Downloads high-quality images from Unsplash
+3. Places them in the appropriate folders based on product and fabric type
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+To re-run the image download script:
 
-## What technologies are used for this project?
+```bash
+node download-images.js
+```
 
-This project is built with:
+## Deployment
 
-- Vite
-- TypeScript
+This project is configured for easy deployment to Vercel.
+
+### Deploying to Vercel
+
+1. Create a Vercel account at [vercel.com](https://vercel.com) if you don't have one
+2. Install the Vercel CLI:
+```bash
+npm install -g vercel
+```
+3. Run the following command from the project directory:
+```bash
+vercel
+```
+4. Follow the prompts to connect to your Vercel account and configure your project
+5. Once deployed, your site will be available at a Vercel URL
+
+Alternatively, you can connect your GitHub repository to Vercel for automatic deployments.
+
+### Admin Access
+
+The admin dashboard can be accessed at `/admin/login` with these default credentials:
+- Username: `admin`
+- Password: `vcseues2024`
+
+Make sure to change these credentials in a production environment.
+
+## Technologies Used
+
 - React
-- shadcn-ui
+- TypeScript
+- Vite
 - Tailwind CSS
+- ShadCN UI Components
 
-## How can I deploy this project?
+## License
 
-Simply open [Lovable](https://lovable.dev/projects/18a340bf-21fd-437c-af2b-3aeea03ae0a6) and click on Share -> Publish.
+This project is licensed under the MIT License.
 
-## Can I connect a custom domain to my Lovable project?
+## Credits
 
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+All product images are from [Unsplash](https://unsplash.com) and are used under the Unsplash License.

@@ -1,6 +1,6 @@
-
 import { useState, useEffect } from "react";
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
+import FallbackImage from "@/components/ui/FallbackImage";
 
 interface ImageCarouselProps {
   images: string[];
@@ -51,7 +51,7 @@ const ImageCarousel = ({
     <div>
       {/* Main image */}
       <div className={`mb-4 rounded-lg overflow-hidden ${aspectRatioClass}`}>
-        <img
+        <FallbackImage
           src={mainImage}
           alt={alt}
           className="w-full h-full object-cover"
@@ -78,7 +78,7 @@ const ImageCarousel = ({
                   }`}
                   onClick={() => setMainImage(image)}
                 >
-                  <img
+                  <FallbackImage
                     src={image}
                     alt={`${alt} thumbnail ${index + 1}`}
                     className="aspect-square object-cover w-full"
