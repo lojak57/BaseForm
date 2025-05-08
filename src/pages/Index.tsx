@@ -14,23 +14,15 @@ const Index = () => {
     <Layout>
       {/* Hero Section */}
       <HeroSplit
-        title="Artisan Purses Handcrafted in Colorado"
-        description="Each VC Sews creation combines beautiful fabrics, meticulous craftsmanship, and functional design. From elegant clutches to everyday totes, discover pieces that are as unique as you are."
-        ctaText="Shop Now"
+        title="Hand-crafted purses, made just for you."
+        ctaText="Shop Bags"
         ctaLink="/category/crossbody"
         image="/images/hero.jpg"
-        imageAlt="Handcrafted leather purse"
+        imageAlt="Handcrafted leather purse on rustic table"
       />
 
       {/* Categories Grid */}
       <CategoryGrid />
-
-      {/* Featured Products */}
-      <CardGallery
-        title="Our Best Sellers"
-        subtitle="HANDCRAFTED WITH CARE"
-        products={featuredProducts}
-      />
 
       {/* Features Section */}
       <FeatureRow
@@ -47,8 +39,24 @@ const Index = () => {
                 <path d="m17.5 10.5 1.5-1.5 1.5 1.5L17.5 14l-3-3 1.5-1.5"></path>
               </svg>
             ),
-            title: "Handcrafted Quality",
+            title: "Handmade",
             description: "Every stitch placed with care by skilled hands, ensuring durability and beauty in every piece."
+          },
+          {
+            icon: (
+              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-palette">
+                <circle cx="13.5" cy="6.5" r="2.5"></circle>
+                <circle cx="19" cy="13" r="2.5"></circle>
+                <circle cx="6" cy="12" r="2.5"></circle>
+                <circle cx="10" cy="20" r="2.5"></circle>
+                <path d="M10 8V2.5"></path>
+                <path d="M14 13.5v6"></path>
+                <path d="M9 11.5 4.5 7"></path>
+                <path d="m16 15 2.5 3.5"></path>
+              </svg>
+            ),
+            title: "Custom Fabric",
+            description: "Choose from premium fabrics or bring your own for a truly personalized bag that matches your unique style."
           },
           {
             icon: (
@@ -57,20 +65,17 @@ const Index = () => {
                 <path d="M4.14 15.08c2.62-1.57 5.24-1.43 7.86.42 2.74 1.94 5.49 2 8.23.19"></path>
               </svg>
             ),
-            title: "Colorado Inspired",
-            description: "Designs inspired by the beauty and spirit of Colorado's mountains, bringing nature's elegance to your style."
-          },
-          {
-            icon: (
-              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-leaf">
-                <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
-                <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
-              </svg>
-            ),
-            title: "Sustainable Materials",
-            description: "Premium fabrics and materials chosen for their quality and environmental impact for guilt-free luxury."
+            title: "Colorado Craftsmanship",
+            description: "Proudly designed and handmade in Colorado, bringing the spirit of mountain craftsmanship to your everyday accessories."
           }
         ]}
+      />
+
+      {/* Featured Products */}
+      <CardGallery
+        title="Our Best Sellers"
+        subtitle="HANDCRAFTED WITH CARE"
+        products={featuredProducts}
       />
 
       {/* Testimonial Quote */}

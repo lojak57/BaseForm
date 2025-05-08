@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 interface HeroSplitProps {
   title: string;
   subtitle?: string;
-  description: string;
+  description?: string;
   ctaText: string;
   ctaLink: string;
   image: string;
@@ -31,13 +31,18 @@ const HeroSplit = ({
               {subtitle && (
                 <p className="text-threadGold font-medium mb-2">{subtitle}</p>
               )}
-              <h1 className="font-playfair text-3xl md:text-5xl leading-tight mb-6">
+              <h1 className="font-playfair text-3xl md:text-5xl md:text-[48px] leading-tight mb-6">
                 {title}
               </h1>
-              <p className="text-darkGray text-lg mb-8 leading-relaxed">
-                {description}
-              </p>
-              <Link to={ctaLink} className="btn-primary inline-block">
+              {description && (
+                <p className="text-darkGray text-lg md:text-[18px] mb-8 leading-relaxed">
+                  {description}
+                </p>
+              )}
+              <Link 
+                to={ctaLink} 
+                className="btn-primary bg-threadGold hover:bg-threadGold/90 transition-all inline-block"
+              >
                 {ctaText}
               </Link>
             </div>

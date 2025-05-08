@@ -16,7 +16,7 @@ const CategoryGrid = () => {
             <Link 
               key={category.id} 
               to={`/category/${category.slug}`}
-              className="product-card group rounded-lg overflow-hidden"
+              className="product-card group rounded-lg overflow-hidden relative"
             >
               <div className="relative h-64 md:h-80 overflow-hidden">
                 <img 
@@ -31,6 +31,8 @@ const CategoryGrid = () => {
                   </div>
                 </div>
               </div>
+              {/* Stitched border effect on hover */}
+              <div className="absolute inset-0 border-[3px] border-dashed border-threadGold/0 rounded-lg transition-all duration-300 group-hover:border-threadGold/50 pointer-events-none"></div>
             </Link>
           ))}
         </div>

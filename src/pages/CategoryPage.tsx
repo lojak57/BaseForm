@@ -41,7 +41,7 @@ const CategoryPage = () => {
                 </Link>
               </li>
               <li>/</li>
-              <li className="text-darkText">{category.name}</li>
+              <li className="text-darkText font-medium">{category.name}</li>
             </ol>
           </nav>
 
@@ -55,7 +55,7 @@ const CategoryPage = () => {
             <img 
               src={category.image} 
               alt={category.name}
-              className="w-full h-64 md:h-80 object-cover rounded-lg"
+              className="w-full h-64 md:h-80 object-cover rounded-lg shadow-md"
             />
           </div>
 
