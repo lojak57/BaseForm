@@ -1,26 +1,70 @@
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useProductManagement } from "@/context/ProductManagementContext";
 import { categories } from "@/data/products";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Product } from "@/context/CartContext";
+import { Loader2 } from "lucide-react";
 
 export default function DashboardHome() {
   const { getAllProducts } = useProductManagement();
   const [productCount, setProductCount] = useState(0);
   const [categoryStats, setCategoryStats] = useState<Record<string, number>>({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const products = getAllProducts();
-    setProductCount(products.length);
+    async function fetchData() {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const products = await getAllProducts();
+        setProductCount(products.length);
+        
+        // Count products by category
+        const stats: Record<string, number> = {};
+        categories.forEach(cat => {
+          stats[cat.id] = products.filter(p => p.categoryId === cat.id).length;
+        });
+        setCategoryStats(stats);
+      } catch (err) {
+        console.error("Error fetching products for dashboard:", err);
+        setError("Failed to load dashboard data");
+      } finally {
+        setLoading(false);
+      }
+    }
     
-    // Count products by category
-    const stats: Record<string, number> = {};
-    categories.forEach(cat => {
-      stats[cat.id] = products.filter(p => p.categoryId === cat.id).length;
-    });
-    setCategoryStats(stats);
+    fetchData();
   }, [getAllProducts]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center py-12">
+        <Loader2 className="h-8 w-8 animate-spin text-threadGold" />
+        <span className="ml-2">Loading dashboard data...</span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-red-50 text-red-600 p-4 rounded-md">
+        {error}
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={() => window.location.reload()}
+          className="ml-4"
+        >
+          Retry
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -96,4 +140,4 @@ export default function DashboardHome() {
       </div>
     </div>
   );
-} 
+}
