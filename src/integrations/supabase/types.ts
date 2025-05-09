@@ -9,7 +9,89 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      fabrics: {
+        Row: {
+          code: string
+          created_at: string | null
+          id: string
+          img_override: string[] | null
+          label: string
+          product_id: string
+          swatch: string | null
+          upcharge: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string | null
+          id?: string
+          img_override?: string[] | null
+          label: string
+          product_id: string
+          swatch?: string | null
+          upcharge?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string | null
+          id?: string
+          img_override?: string[] | null
+          label?: string
+          product_id?: string
+          swatch?: string | null
+          upcharge?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fabrics_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          category_id: string
+          created_at: string | null
+          default_images: string[] | null
+          description: string | null
+          has_fabric_selection: boolean | null
+          id: string
+          name: string
+          price: number
+          slug: string
+          updated_at: string | null
+        }
+        Insert: {
+          category_id: string
+          created_at?: string | null
+          default_images?: string[] | null
+          description?: string | null
+          has_fabric_selection?: boolean | null
+          id?: string
+          name: string
+          price: number
+          slug: string
+          updated_at?: string | null
+        }
+        Update: {
+          category_id?: string
+          created_at?: string | null
+          default_images?: string[] | null
+          description?: string | null
+          has_fabric_selection?: boolean | null
+          id?: string
+          name?: string
+          price?: number
+          slug?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

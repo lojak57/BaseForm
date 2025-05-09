@@ -1,8 +1,10 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useProductManagement } from "@/context/ProductManagementContext";
 import { Product, Fabric } from "@/context/CartContext";
 import { toast } from "@/components/ui/sonner";
+import { Loader2 } from "lucide-react";
 
 // Wizard Steps
 import { WizardSteps } from "@/components/admin/product-wizard/WizardSteps";
@@ -19,7 +21,7 @@ const STEP_TITLES = [
 ];
 
 export default function ProductWizard() {
-  const { addProduct, updateProduct, getAllProducts } = useProductManagement();
+  const { addProduct, updateProduct, products, loading } = useProductManagement();
   const navigate = useNavigate();
   const { productId } = useParams();
   const isEditing = !!productId;
@@ -38,10 +40,12 @@ export default function ProductWizard() {
     hasFabricSelection: true
   });
   
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
   // Load product data if editing
   useEffect(() => {
-    if (isEditing && productId) {
-      const existingProduct = getAllProducts().find(p => p.id === productId);
+    if (isEditing && productId && products.length > 0) {
+      const existingProduct = products.find(p => p.id === productId);
       if (existingProduct) {
         setProduct(existingProduct);
       } else {
@@ -49,7 +53,7 @@ export default function ProductWizard() {
         navigate("/admin/products");
       }
     }
-  }, [isEditing, productId, getAllProducts, navigate]);
+  }, [isEditing, productId, products, navigate]);
   
   const updateField = (field: keyof Product, value: any) => {
     setProduct(prev => ({ ...prev, [field]: value }));
@@ -107,9 +111,9 @@ export default function ProductWizard() {
     setStep(prev => Math.max(1, prev - 1));
   };
   
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Make sure we have all required data
-    if (!product.id || !product.name || !product.slug || 
+    if (!product.name || !product.slug || 
         !product.categoryId || !product.price || 
         !product.description || !product.defaultImages?.length) {
       toast.error("Please complete all required fields");
@@ -117,18 +121,37 @@ export default function ProductWizard() {
     }
     
     try {
+      setIsSubmitting(true);
+      
+      // Generate a UUID for new products if one doesn't exist already
+      if (!isEditing && !product.id) {
+        product.id = crypto.randomUUID();
+      }
+      
       // Cast to full Product type since we've validated all fields
       if (isEditing) {
-        updateProduct(product as Product);
+        await updateProduct(product as Product);
       } else {
-        addProduct(product as Product);
+        await addProduct(product as Product);
       }
       navigate("/admin/products");
     } catch (error) {
       toast.error("Error saving product");
       console.error(error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
+  
+  // Show loading state while fetching product data in edit mode
+  if (isEditing && loading) {
+    return (
+      <div className="flex justify-center items-center py-20">
+        <Loader2 className="h-8 w-8 animate-spin text-threadGold" />
+        <span className="ml-2">Loading product data...</span>
+      </div>
+    );
+  }
   
   return (
     <div className="max-w-4xl mx-auto">
@@ -186,7 +209,14 @@ export default function ProductWizard() {
           onSubmit={handleSubmit}
           isEditing={isEditing}
         />
+        
+        {isSubmitting && (
+          <div className="flex justify-center items-center mt-4">
+            <Loader2 className="h-5 w-5 animate-spin mr-2" />
+            <span>Saving product...</span>
+          </div>
+        )}
       </div>
     </div>
   );
-} 
+}

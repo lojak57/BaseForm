@@ -5,34 +5,31 @@ import { useProductManagement } from "@/context/ProductManagementContext";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Search } from "lucide-react";
+import { Search, Loader2 } from "lucide-react";
 import { Product } from "@/context/CartContext";
 
 export default function ProductListing() {
-  const { getAllProducts } = useProductManagement();
-  const [products, setProducts] = useState<Product[]>([]);
+  const { products, loading, error } = useProductManagement();
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    const allProducts = getAllProducts();
-    setProducts(allProducts);
-    setFilteredProducts(allProducts);
-  }, [getAllProducts]);
+    if (products) {
+      if (!searchQuery.trim()) {
+        setFilteredProducts(products);
+      } else {
+        const filtered = products.filter(
+          product => 
+            product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            product.categoryId.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setFilteredProducts(filtered);
+      }
+    }
+  }, [products, searchQuery]);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
-    if (!query.trim()) {
-      setFilteredProducts(products);
-      return;
-    }
-
-    const filtered = products.filter(
-      product => 
-        product.name.toLowerCase().includes(query.toLowerCase()) ||
-        product.categoryId.toLowerCase().includes(query.toLowerCase())
-    );
-    setFilteredProducts(filtered);
   };
 
   return (
@@ -57,7 +54,24 @@ export default function ProductListing() {
         </div>
       </div>
 
-      {filteredProducts.length === 0 ? (
+      {loading ? (
+        <div className="flex justify-center items-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-threadGold" />
+          <span className="ml-2">Loading products...</span>
+        </div>
+      ) : error ? (
+        <div className="bg-red-50 text-red-600 p-4 rounded-md">
+          {error}
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={() => window.location.reload()}
+            className="ml-4"
+          >
+            Retry
+          </Button>
+        </div>
+      ) : filteredProducts.length === 0 ? (
         <div className="text-center py-12 bg-gray-50 rounded-lg">
           <h3 className="text-lg font-medium text-gray-600 mb-2">No products found</h3>
           <p className="text-gray-500 mb-4">
