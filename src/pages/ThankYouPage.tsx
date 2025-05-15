@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, CheckCircle2, AlertCircle } from "lucide-react";
@@ -14,6 +14,7 @@ export default function ThankYouPage() {
   const location = useLocation();
   const { clearCart } = useCart();
   const { currentTenant } = useAuth();
+  const cartCleared = useRef(false);
   
   useEffect(() => {
     async function processPayment() {
@@ -34,11 +35,7 @@ export default function ThankYouPage() {
         
         // Get tenant ID if available
         if (currentTenant) {
-          if (typeof currentTenant === 'object') {
-            tenantId = currentTenant.id || tenantId;
-          } else if (typeof currentTenant === 'string') {
-            tenantId = currentTenant;
-          }
+          tenantId = currentTenant;
         }
           
         // Record the successful payment in the database
@@ -55,8 +52,11 @@ export default function ThankYouPage() {
           console.error("Error recording payment:", dbError);
         }
         
-        // Clear the cart after successful payment
-        clearCart();
+        // Clear the cart after successful payment - only once
+        if (!cartCleared.current) {
+          clearCart();
+          cartCleared.current = true;
+        }
         
         setPaymentStatus("Payment successful!");
         setIsVerifying(false);
