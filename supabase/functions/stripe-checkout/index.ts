@@ -44,7 +44,7 @@ serve(async (req) => {
     
     // Determine the success and cancel URLs
     const origin = req.headers.get("origin") || "http://localhost:5173";
-    let successUrl = `${origin}/thank-you?session_id={CHECKOUT_SESSION_ID}`;
+    let successUrl = `${origin}/thanks?session_id={CHECKOUT_SESSION_ID}`;
     
     // If opportunityId is provided, include it in the success URL
     if (opportunityId) {
