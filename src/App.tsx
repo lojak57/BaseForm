@@ -1,3 +1,5 @@
+// Force Vercel rebuild - App.tsx modified on May 15, 2024
+// This is the main app component for VCSews
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
