@@ -1,15 +1,18 @@
-
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { categories } from "@/data/products";
+import { categories } from "@/data/categories";
+import { ShoppingCart, Menu, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 const Header = () => {
   const { cartCount } = useCart();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   // Handle scroll events
   useEffect(() => {
@@ -19,6 +22,13 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
 
   return (
     <header
@@ -32,9 +42,25 @@ const Header = () => {
           <img 
             src="/lovable-uploads/463dd640-f9c6-4abf-aa5f-4e6927af1de5.png" 
             alt="VC Sews" 
-            className="h-[80px] md:h-[120px] object-contain"
+            className="h-[100px] md:h-[140px] w-auto object-contain transition-all duration-300"
           />
         </Link>
+
+        {/* Search bar - desktop */}
+        <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-md mx-6">
+          <div className="relative w-full">
+            <Input
+              type="search"
+              placeholder="Search products..."
+              className="w-full pr-10"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button type="submit" className="absolute right-3 top-1/2 transform -translate-y-1/2">
+              <Search className="h-4 w-4 text-gray-500" />
+            </button>
+          </div>
+        </form>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
@@ -61,13 +87,9 @@ const Header = () => {
             to="/cart" 
             className="relative p-2 ml-4"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-shopping-bag text-darkText hover:text-threadGold transition-colors">
-              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-              <path d="M3 6h18"></path>
-              <path d="M16 10a4 4 0 0 1-8 0"></path>
-            </svg>
+            <ShoppingCart className="h-6 w-6 text-darkText hover:text-threadGold transition-colors" />
             {cartCount() > 0 && (
-              <span className="absolute -top-1 -right-1 bg-threadGold text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+              <span className="absolute -top-2 -right-2 bg-threadGold text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                 {cartCount()}
               </span>
             )}
@@ -77,11 +99,7 @@ const Header = () => {
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="md:hidden ml-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-menu">
-                  <line x1="4" x2="20" y1="12" y2="12"></line>
-                  <line x1="4" x2="20" y1="6" y2="6"></line>
-                  <line x1="4" x2="20" y1="18" y2="18"></line>
-                </svg>
+                <Menu className="h-6 w-6" />
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
@@ -119,6 +137,22 @@ const Header = () => {
                   Cart ({cartCount()})
                 </Link>
               </div>
+
+              {/* Mobile Search */}
+              <form onSubmit={handleSearch} className="mt-6 mb-6">
+                <div className="relative w-full">
+                  <Input
+                    type="search"
+                    placeholder="Search products..."
+                    className="w-full pr-10"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  <button type="submit" className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                    <Search className="h-4 w-4 text-gray-500" />
+                  </button>
+                </div>
+              </form>
             </SheetContent>
           </Sheet>
         </div>

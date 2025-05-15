@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { categories } from "@/data/products";
+import { categories } from "@/data/categories";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();

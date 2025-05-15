@@ -1,9 +1,9 @@
-
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import CartTable from "@/components/blocks/CartTable";
 import { useCart } from "@/context/CartContext";
+import { formatCurrency } from "@/lib/utils";
 
 const CartPage = () => {
   const { cart, cartTotal } = useCart();
@@ -47,7 +47,7 @@ const CartPage = () => {
                   <div className="border-t border-gray-100 py-4">
                     <div className="flex justify-between mb-2">
                       <span>Subtotal</span>
-                      <span>${cartTotal().toFixed(2)}</span>
+                      <span>{formatCurrency(cartTotal())}</span>
                     </div>
                     <div className="flex justify-between mb-2">
                       <span>Shipping</span>
@@ -57,7 +57,7 @@ const CartPage = () => {
                   <div className="border-t border-gray-100 py-4">
                     <div className="flex justify-between font-medium">
                       <span>Total</span>
-                      <span>${cartTotal().toFixed(2)}</span>
+                      <span>{formatCurrency(cartTotal())}</span>
                     </div>
                   </div>
                   <Link to="/checkout" className="btn-primary w-full text-center mt-4">

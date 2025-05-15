@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 
 @tailwind base;
@@ -50,6 +49,18 @@
   .dark {
     /* Keeping dark theme values but they won't be used in this project */
     /* ... keep existing code */
+  }
+}
+
+@layer utilities {
+  /* Add custom animation for the hero carousel */
+  @keyframes fadein {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-fadein {
+    animation: fadein 1s ease-out forwards;
   }
 }
 

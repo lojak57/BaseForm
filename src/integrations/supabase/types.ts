@@ -1,3 +1,23 @@
+import { Database as DatabaseGenerated } from "./supabase";
+
+// Extend the generated types with custom RPCs
+export interface ExtendedDatabase extends DatabaseGenerated {
+  functions: {
+    apply_tenant_rls_fix: {
+      Args: Record<string, never>;
+      Returns: boolean;
+    };
+    exec_sql: {
+      Args: {
+        sql: string;
+      };
+      Returns: null;
+    };
+  }
+}
+
+export type Database = ExtendedDatabase;
+
 export type Json =
   | string
   | number
@@ -20,6 +40,7 @@ export type Database = {
           swatch: string | null
           upcharge: number | null
           updated_at: string | null
+          tenant_id: string
         }
         Insert: {
           code: string
@@ -31,6 +52,7 @@ export type Database = {
           swatch?: string | null
           upcharge?: number | null
           updated_at?: string | null
+          tenant_id?: string
         }
         Update: {
           code?: string
@@ -42,6 +64,7 @@ export type Database = {
           swatch?: string | null
           upcharge?: number | null
           updated_at?: string | null
+          tenant_id?: string
         }
         Relationships: [
           {
@@ -65,6 +88,8 @@ export type Database = {
           price: number
           slug: string
           updated_at: string | null
+          source: string | null
+          tenant_id: string
         }
         Insert: {
           category_id: string
@@ -77,6 +102,8 @@ export type Database = {
           price: number
           slug: string
           updated_at?: string | null
+          source?: string | null
+          tenant_id?: string
         }
         Update: {
           category_id?: string
@@ -89,6 +116,8 @@ export type Database = {
           price?: number
           slug?: string
           updated_at?: string | null
+          source?: string | null
+          tenant_id?: string
         }
         Relationships: []
       }

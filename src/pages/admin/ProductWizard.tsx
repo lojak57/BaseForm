@@ -1,30 +1,44 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useProductManagement } from "@/context/ProductManagementContext";
 import { Product, Fabric } from "@/context/CartContext";
 import { toast } from "@/components/ui/sonner";
 import { Loader2 } from "lucide-react";
+import { v4 as uuidv4 } from "uuid";
 
 // Wizard Steps
 import { WizardSteps } from "@/components/admin/product-wizard/WizardSteps";
 import { BasicInfoStep } from "@/components/admin/product-wizard/BasicInfoStep";
-import { DetailsStep } from "@/components/admin/product-wizard/DetailsStep";
 import { ImagesStep } from "@/components/admin/product-wizard/ImagesStep";
 import { FabricStep } from "@/components/admin/product-wizard/FabricStep";
 
 const STEP_TITLES = [
   "Basic Information",
-  "Product Details",
   "Product Images",
   "Fabric Options"
 ];
+
+// Helper function to create URL-friendly slugs
+const slugify = (text: string) => {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')         // Replace spaces with -
+    .replace(/[^\w\-]+/g, '')     // Remove all non-word chars
+    .replace(/\-\-+/g, '-')       // Replace multiple - with single -
+    .replace(/^-+/, '')           // Trim - from start of text
+    .replace(/-+$/, '');          // Trim - from end of text
+};
 
 export default function ProductWizard() {
   const { addProduct, updateProduct, products, loading } = useProductManagement();
   const navigate = useNavigate();
   const { productId } = useParams();
   const isEditing = !!productId;
+  
+  // Default product description template
+  const defaultDescription = "Handcrafted with care and attention to detail. This premium quality item is designed to be both functional and stylish. Made with high-quality materials that ensure durability and long-lasting performance.";
   
   // Basic product state
   const [step, setStep] = useState(1);
@@ -33,7 +47,7 @@ export default function ProductWizard() {
     slug: "",
     name: "",
     price: 0,
-    description: "",
+    description: defaultDescription,
     categoryId: "",
     defaultImages: ["", "", ""],
     fabrics: [],
@@ -55,8 +69,26 @@ export default function ProductWizard() {
     }
   }, [isEditing, productId, products, navigate]);
   
+  // Auto-generate slug when name changes
+  useEffect(() => {
+    if (product.name && !isEditing && !product.slug) {
+      setProduct(prev => ({
+        ...prev,
+        slug: slugify(prev.name || '')
+      }));
+    }
+  }, [product.name, isEditing]);
+  
   const updateField = (field: keyof Product, value: any) => {
     setProduct(prev => ({ ...prev, [field]: value }));
+    
+    // If updating the name field, also update the slug (for new products only)
+    if (field === 'name' && !isEditing) {
+      setProduct(prev => ({
+        ...prev,
+        slug: slugify(value || '')
+      }));
+    }
   };
   
   const addFabric = (fabric: Fabric) => {
@@ -78,18 +110,12 @@ export default function ProductWizard() {
   const validateStep = (currentStep: number): boolean => {
     switch (currentStep) {
       case 1:
-        if (!product.name || !product.slug || !product.categoryId) {
+        if (!product.name || !product.slug || !product.categoryId || !product.price || !product.description) {
           toast.error("Please fill in all required fields");
           return false;
         }
         return true;
       case 2:
-        if (!product.price || !product.description) {
-          toast.error("Please fill in all required fields");
-          return false;
-        }
-        return true;
-      case 3:
         if (!product.defaultImages?.length || 
             !product.defaultImages[0]) {
           toast.error("Please provide at least one product image");
@@ -103,7 +129,13 @@ export default function ProductWizard() {
   
   const handleNext = () => {
     if (validateStep(step)) {
-      setStep(prev => prev + 1);
+      // If we're on the images step (step 2) and fabric selection is disabled,
+      // skip step 3 (Fabric Options) and go straight to submission
+      if (step === 2 && product.hasFabricSelection === false) {
+        handleSubmit();
+      } else {
+        setStep(prev => prev + 1);
+      }
     }
   };
   
@@ -124,20 +156,41 @@ export default function ProductWizard() {
       setIsSubmitting(true);
       
       // Generate a UUID for new products if one doesn't exist already
-      if (!isEditing && !product.id) {
-        product.id = crypto.randomUUID();
+      const productId = isEditing ? product.id : uuidv4();
+      
+      // Clean up the defaultImages array to remove empty strings
+      const cleanedImages = product.defaultImages?.filter(img => img) || [];
+      
+      // Ensure hasFabricSelection is set correctly based on fabrics and user choice
+      const hasFabrics = product.fabrics && product.fabrics.length > 0;
+      
+      // Prepare the final product object
+      const finalProduct: Product = {
+        id: productId!,
+        name: product.name!,
+        slug: slugify(product.slug || product.name || ''),
+        categoryId: product.categoryId!,
+        price: product.price!,
+        description: product.description!,
+        defaultImages: cleanedImages,
+        fabrics: product.hasFabricSelection ? (product.fabrics || []) : [],
+        hasFabricSelection: !!product.hasFabricSelection,
+        source: product.source
+      };
+      
+      // Submit to backend
+      if (isEditing) {
+        await updateProduct(finalProduct);
+        toast.success("Product updated successfully");
+      } else {
+        await addProduct(finalProduct);
+        toast.success("Product created successfully");
       }
       
-      // Cast to full Product type since we've validated all fields
-      if (isEditing) {
-        await updateProduct(product as Product);
-      } else {
-        await addProduct(product as Product);
-      }
       navigate("/admin/products");
     } catch (error) {
-      toast.error("Error saving product");
-      console.error(error);
+      console.error("Error saving product:", error);
+      toast.error(`Error saving product: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -153,6 +206,12 @@ export default function ProductWizard() {
     );
   }
   
+  // Check if we should show the Fabric step based on product settings
+  const showFabricStep = product.hasFabricSelection !== false;
+  
+  // Determine if current step is the last step
+  const isLastStep = showFabricStep ? step === STEP_TITLES.length : step === 2;
+  
   return (
     <div className="max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold font-playfair mb-6">
@@ -161,10 +220,10 @@ export default function ProductWizard() {
       
       <WizardSteps
         currentStep={step}
-        stepTitles={STEP_TITLES}
+        stepTitles={showFabricStep ? STEP_TITLES : STEP_TITLES.slice(0, 2)}
         onNext={handleNext}
         onPrevious={handlePrevious}
-        isLastStep={step === STEP_TITLES.length}
+        isLastStep={isLastStep}
         onSubmit={handleSubmit}
         isEditing={isEditing}
       />
@@ -178,45 +237,20 @@ export default function ProductWizard() {
       )}
       
       {step === 2 && (
-        <DetailsStep
-          product={product}
-          updateField={updateField}
-        />
-      )}
-      
-      {step === 3 && (
         <ImagesStep
           product={product}
           updateField={updateField}
         />
       )}
       
-      {step === 4 && (
+      {step === 3 && showFabricStep && (
         <FabricStep
           product={product}
           addFabric={addFabric}
           removeFabric={removeFabric}
+          updateField={updateField}
         />
       )}
-      
-      <div className="mt-10">
-        <WizardSteps
-          currentStep={step}
-          stepTitles={STEP_TITLES}
-          onNext={handleNext}
-          onPrevious={handlePrevious}
-          isLastStep={step === STEP_TITLES.length}
-          onSubmit={handleSubmit}
-          isEditing={isEditing}
-        />
-        
-        {isSubmitting && (
-          <div className="flex justify-center items-center mt-4">
-            <Loader2 className="h-5 w-5 animate-spin mr-2" />
-            <span>Saving product...</span>
-          </div>
-        )}
-      </div>
     </div>
   );
 }

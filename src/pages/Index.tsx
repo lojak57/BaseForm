@@ -1,96 +1,191 @@
-
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
-import HeroSplit from "@/components/blocks/HeroSplit";
-import FeatureRow from "@/components/blocks/FeatureRow";
-import CategoryGrid from "@/components/blocks/CategoryGrid";
+import HeroCarousel from "@/components/blocks/HeroCarousel";
 import CardGallery from "@/components/blocks/CardGallery";
-import { products } from "@/data/products";
+import { categories } from "@/data/categories";
+import { useProducts } from "@/context/ProductContext";
+import { checkProducts } from "@/lib/product-debug";
+import { Button } from "@/components/ui/button";
+import { toast } from "@/components/ui/sonner";
+import FallbackImage from "@/components/ui/FallbackImage";
 
-const Index = () => {
-  // Select a few featured products
-  const featuredProducts = products.slice(0, 3);
+export default function Index() {
+  const { products, loading, refreshProducts, getProductsByCategory } = useProducts();
+  const [isChecking, setIsChecking] = useState(false);
   
+  // Get featured products (limit to 4)
+  const featuredProducts = products.slice(0, 4);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  // Function to get a product image for each category
+  const getCategoryProductImage = (categoryId: string) => {
+    // Get products for this category
+    const categoryProducts = getProductsByCategory(categoryId);
+    
+    // If there are products with images, use the first product image
+    if (categoryProducts.length > 0 && categoryProducts[0].defaultImages && categoryProducts[0].defaultImages.length > 0) {
+      return categoryProducts[0].defaultImages[0];
+    }
+    
+    // Look for a product with images from any category as backup
+    if (categoryId === 'other') {
+      const allProducts = [
+        ...getProductsByCategory('purses'),
+        ...getProductsByCategory('bags'),
+        ...getProductsByCategory('wallets')
+      ];
+      
+      const productWithImage = allProducts.find(p => p.defaultImages && p.defaultImages.length > 0);
+      if (productWithImage) {
+        return productWithImage.defaultImages[0];
+      }
+    }
+    
+    // Fall back to the static category image if no product images are available
+    const category = categories.find(cat => cat.id === categoryId);
+    return category?.image || '/images/placeholder.jpg';
+  };
+
+  const handleCheckProducts = async () => {
+    setIsChecking(true);
+    try {
+      await checkProducts();
+      toast.info("Product check complete. Check browser console for details.");
+      // Refresh products after checking
+      await refreshProducts();
+    } catch (error) {
+      console.error("Error checking products:", error);
+      toast.error("Error checking products");
+    } finally {
+      setIsChecking(false);
+    }
+  };
+
   return (
     <Layout>
-      {/* Hero Section */}
-      <HeroSplit
-        title="Hand-crafted purses, made just for you."
-        ctaText="Shop Bags"
-        ctaLink="/category/crossbody"
-        image="/images/hero.jpg"
-        imageAlt="Handcrafted leather purse on rustic table"
+      {/* Hero Section with Rotating Images */}
+      <HeroCarousel 
+        title="Handcrafted Bags & Purses"
+        subtitle="Made with love in Colorado"
+        ctaText="Shop Now"
+        ctaLink="/category/purses"
       />
 
-      {/* Categories Grid */}
-      <CategoryGrid />
-
-      {/* Features Section */}
-      <FeatureRow
-        title="Why Choose VC Sews"
-        subtitle="OUR PROMISE"
-        features={[
-          {
-            icon: (
-              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-hand-heart">
-                <path d="M11 14V8a1 1 0 0 0-1-1v0a1 1 0 0 0-1 1v2.5"></path>
-                <path d="M9 10.5V5a1 1 0 0 0-1-1v0a1 1 0 0 0-1 1v9"></path>
-                <path d="M7 14V7a1 1 0 0 0-1-1v0a1 1 0 0 0-1 1v7"></path>
-                <path d="M18 15v4a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3v-6"></path>
-                <path d="m17.5 10.5 1.5-1.5 1.5 1.5L17.5 14l-3-3 1.5-1.5"></path>
-              </svg>
-            ),
-            title: "Handmade",
-            description: "Every stitch placed with care by skilled hands, ensuring durability and beauty in every piece."
-          },
-          {
-            icon: (
-              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-palette">
-                <circle cx="13.5" cy="6.5" r="2.5"></circle>
-                <circle cx="19" cy="13" r="2.5"></circle>
-                <circle cx="6" cy="12" r="2.5"></circle>
-                <circle cx="10" cy="20" r="2.5"></circle>
-                <path d="M10 8V2.5"></path>
-                <path d="M14 13.5v6"></path>
-                <path d="M9 11.5 4.5 7"></path>
-                <path d="m16 15 2.5 3.5"></path>
-              </svg>
-            ),
-            title: "Custom Fabric",
-            description: "Choose from premium fabrics or bring your own for a truly personalized bag that matches your unique style."
-          },
-          {
-            icon: (
-              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-mountain-snow">
-                <path d="m8 3 4 8 5-5 5 15H2L8 3z"></path>
-                <path d="M4.14 15.08c2.62-1.57 5.24-1.43 7.86.42 2.74 1.94 5.49 2 8.23.19"></path>
-              </svg>
-            ),
-            title: "Colorado Craftsmanship",
-            description: "Proudly designed and handmade in Colorado, bringing the spirit of mountain craftsmanship to your everyday accessories."
-          }
-        ]}
-      />
-
-      {/* Featured Products */}
-      <CardGallery
-        title="Our Best Sellers"
-        subtitle="HANDCRAFTED WITH CARE"
-        products={featuredProducts}
-      />
-
-      {/* Testimonial Quote */}
-      <div className="py-16 bg-threadGold/10">
-        <div className="container mx-auto px-4 max-w-4xl text-center">
-          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-quote mx-auto mb-6 text-threadGold">
-            <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"></path>
-            <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"></path>
-          </svg>
-          <p className="font-playfair text-xl md:text-2xl italic mb-6">The quality of these bags is exceptional. I've had my Mountain Trail Crossbody for over a year now, and it still looks brand new despite daily use. The attention to detail in the stitching and design makes these purses truly special.</p>
-          <p className="font-medium text-threadGold">— Sarah L., Boulder</p>
+      {/* Featured Products Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <p className="text-threadGold font-medium mb-2">Our Collection</p>
+            <h2 className="font-playfair text-3xl md:text-4xl">Featured Products</h2>
+          </div>
+          
+          {loading ? (
+            <div className="text-center py-12">
+              <p>Loading products...</p>
+            </div>
+          ) : featuredProducts.length > 0 ? (
+            <CardGallery products={featuredProducts} />
+          ) : (
+            <div className="text-center py-12">
+              <p className="mb-6">No products available yet.</p>
+              <div className="flex flex-col gap-4 items-center">
+                <Link to="/admin/products/new" className="btn-primary">
+                  Add Your First Product
+                </Link>
+                
+                <Button 
+                  variant="outline" 
+                  onClick={handleCheckProducts}
+                  disabled={isChecking}
+                >
+                  {isChecking ? "Checking products..." : "Check for Products"}
+                </Button>
+                <p className="text-sm text-gray-500 mt-2">
+                  If you've already added products but they're not showing, click the button above to check the database.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
-      </div>
+      </section>
+
+      {/* Categories Section */}
+      <section className="py-16 bg-ivory">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <p className="text-threadGold font-medium mb-2">Browse By</p>
+            <h2 className="font-playfair text-3xl md:text-4xl">Categories</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {categories.map((category) => (
+              <Link
+                key={category.id}
+                to={`/category/${category.slug}`}
+                className="group relative overflow-hidden rounded-lg"
+              >
+                <div className="aspect-square">
+                  {loading ? (
+                    // Show loading skeleton while products are being loaded
+                    <div className="w-full h-full bg-gray-200 animate-pulse"></div>
+                  ) : (
+                    <FallbackImage
+                      src={getCategoryProductImage(category.id)}
+                      alt={category.name}
+                      fallbackSrc={category.image}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-darkText/40 flex items-center justify-center">
+                    <div className="text-center p-4">
+                      <h3 className="text-white font-playfair text-2xl mb-2">{category.name}</h3>
+                      <span className="inline-block bg-threadGold text-darkText px-4 py-2 rounded-full text-sm font-medium">
+                        View Products
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="flex justify-center items-center">
+              <img
+                src="/lovable-uploads/463dd640-f9c6-4abf-aa5f-4e6927af1de5.png"
+                alt="VC Sews Logo"
+                className="max-w-full max-h-[300px] lg:max-h-[400px] object-contain rounded-lg shadow-md bg-ivory p-8"
+              />
+            </div>
+            <div>
+              <p className="text-threadGold font-medium mb-2">Our Story</p>
+              <h2 className="font-playfair text-3xl md:text-4xl mb-6">Handcrafted with Love</h2>
+              <div className="prose max-w-none mb-8">
+                <p>
+                  At VC Sews, every stitch tells a story. Our handcrafted bags and purses are
+                  carefully designed and sewn with attention to detail and quality.
+                </p>
+                <p>
+                  Using premium fabrics and materials, we create functional pieces that stand
+                  the test of time while maintaining a unique Colorado aesthetic.
+                </p>
+              </div>
+              <Link to="/contact" className="btn-secondary">
+                Learn More
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
     </Layout>
   );
-};
-
-export default Index;
+}

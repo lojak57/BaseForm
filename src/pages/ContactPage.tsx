@@ -1,9 +1,57 @@
-
 import { useEffect } from "react";
 import Layout from "@/components/layout/Layout";
 import SplitForm from "@/components/blocks/SplitForm";
+import { useProducts } from "@/context/ProductContext";
 
 const ContactPage = () => {
+  const { products } = useProducts();
+  
+  // Get a high-quality product image for the contact form
+  const getProductImage = () => {
+    // Try to find images from specific categories first for better display
+    const preferredCategories = ['purses', 'bags']; 
+    
+    // Look for products in preferred categories first
+    for (const categoryId of preferredCategories) {
+      const categoryProducts = products.filter(
+        product => product.categoryId === categoryId && 
+        product.defaultImages && 
+        product.defaultImages.length > 0
+      );
+      
+      if (categoryProducts.length > 0) {
+        // Sort by product name to get a more consistent image selection
+        const sortedProducts = [...categoryProducts].sort((a, b) => 
+          a.name.localeCompare(b.name)
+        );
+        
+        // Use the second image if available (often shows the full product better)
+        const selectedProduct = sortedProducts[0];
+        if (selectedProduct.defaultImages.length >= 2) {
+          return selectedProduct.defaultImages[1];
+        }
+        return selectedProduct.defaultImages[0];
+      }
+    }
+    
+    // Fallback: Find any product with multiple images and use the second image
+    const productsWithMultipleImages = products.filter(
+      product => product.defaultImages && product.defaultImages.length >= 2
+    );
+    
+    if (productsWithMultipleImages.length > 0) {
+      return productsWithMultipleImages[0].defaultImages[1];
+    }
+    
+    // Second fallback: Find any product with at least one image
+    const productWithImage = products.find(
+      product => product.defaultImages && product.defaultImages.length > 0
+    );
+    
+    // Return the image or fallback to the default
+    return productWithImage?.defaultImages[0] || "/images/contact.jpg";
+  };
+  
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -21,8 +69,8 @@ const ContactPage = () => {
         <SplitForm
           title="Send Us a Message"
           subtitle="Please fill out the form below and we'll get back to you within 24-48 hours."
-          image="/images/contact.jpg"
-          altText="Sewing studio with artisan materials"
+          image={getProductImage()}
+          altText="VC Sews handcrafted product"
         />
 
         <div className="container mx-auto px-4 py-12">

@@ -41,6 +41,11 @@ export default function DashboardPage() {
               Add New Product
             </Link>
             <Separator className="my-4" />
+            <p className="px-4 text-xs text-gray-500 mb-2">Tools</p>
+            <Link to="/admin/diagnostics" className="block py-2 px-4 hover:bg-gray-100 rounded text-sm">
+              System Diagnostics
+            </Link>
+            <Separator className="my-4" />
             <p className="px-4 text-xs text-gray-500 mb-2">Help</p>
             <Link to="/admin/help" className="block py-2 px-4 hover:bg-gray-100 rounded text-sm">
               Admin Guide

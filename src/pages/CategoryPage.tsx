@@ -2,13 +2,16 @@ import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import CardGallery from "@/components/blocks/CardGallery";
-import FallbackImage from "@/components/ui/FallbackImage";
-import { getCategoryBySlug, getProductsByCategory } from "@/data/products";
+import { getCategoryBySlug } from "@/data/categories";
+import { useProducts } from "@/context/ProductContext";
+import { Loader2 } from "lucide-react";
 
 const CategoryPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const category = getCategoryBySlug(slug || "");
-  const products = getProductsByCategory(category?.id || "");
+  const { loading, error, getProductsByCategory } = useProducts();
+  
+  const products = category ? getProductsByCategory(category.id) : [];
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -20,6 +23,33 @@ const CategoryPage = () => {
         <div className="container mx-auto px-4 py-16">
           <h1 className="font-playfair text-3xl mb-6">Category Not Found</h1>
           <p className="mb-8">The category you're looking for doesn't exist.</p>
+          <Link to="/" className="btn-primary">
+            Back to Home
+          </Link>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="container mx-auto px-4 py-16 flex justify-center items-center">
+          <Loader2 className="h-8 w-8 animate-spin text-threadGold mr-2" />
+          <span>Loading products...</span>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (error) {
+    return (
+      <Layout>
+        <div className="container mx-auto px-4 py-16">
+          <h1 className="font-playfair text-3xl mb-6">{category.name}</h1>
+          <div className="bg-red-50 text-red-600 p-4 rounded-md mb-8">
+            Error loading products. Please try again later.
+          </div>
           <Link to="/" className="btn-primary">
             Back to Home
           </Link>
@@ -48,15 +78,6 @@ const CategoryPage = () => {
           <div className="mb-12">
             <h1 className="font-playfair text-3xl md:text-4xl mb-4">{category.name}</h1>
             <p className="text-darkGray max-w-2xl">{category.description}</p>
-          </div>
-
-          {/* Category Hero Image */}
-          <div className="mb-12">
-            <FallbackImage 
-              src={category.image} 
-              alt={category.name}
-              className="w-full h-64 md:h-80 object-cover rounded-lg shadow-md"
-            />
           </div>
 
           {/* Products */}

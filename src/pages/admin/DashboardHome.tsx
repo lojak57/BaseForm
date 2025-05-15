@@ -1,47 +1,53 @@
-
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useProductManagement } from "@/context/ProductManagementContext";
-import { categories } from "@/data/products";
+import { categories } from "@/data/categories";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Product } from "@/context/CartContext";
 import { Loader2 } from "lucide-react";
 
 export default function DashboardHome() {
-  const { getAllProducts } = useProductManagement();
+  const { getAllProducts, loading: contextLoading } = useProductManagement();
   const [productCount, setProductCount] = useState(0);
   const [categoryStats, setCategoryStats] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        setLoading(true);
-        setError(null);
-        
-        const products = await getAllProducts();
-        setProductCount(products.length);
-        
-        // Count products by category
-        const stats: Record<string, number> = {};
-        categories.forEach(cat => {
-          stats[cat.id] = products.filter(p => p.categoryId === cat.id).length;
-        });
-        setCategoryStats(stats);
-      } catch (err) {
-        console.error("Error fetching products for dashboard:", err);
-        setError("Failed to load dashboard data");
-      } finally {
-        setLoading(false);
-      }
+  // Memoize the fetch function to prevent it from changing on each render
+  const fetchData = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const products = await getAllProducts();
+      
+      // Count products by category
+      const stats: Record<string, number> = {};
+      categories.forEach(cat => {
+        stats[cat.id] = products.filter(p => p.categoryId === cat.id).length;
+      });
+      
+      // Batch state updates to prevent multiple re-renders
+      setProductCount(products.length);
+      setCategoryStats(stats);
+    } catch (err) {
+      console.error("Error fetching products for dashboard:", err);
+      setError("Failed to load dashboard data");
+    } finally {
+      setLoading(false);
     }
-    
-    fetchData();
   }, [getAllProducts]);
 
-  if (loading) {
+  useEffect(() => {
+    fetchData();
+    // This effect should run once when the component mounts and when fetchData changes
+  }, [fetchData]);
+
+  // Combine loading states to prevent flicker
+  const isLoading = loading || contextLoading;
+
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center py-12">
         <Loader2 className="h-8 w-8 animate-spin text-threadGold" />
@@ -57,7 +63,7 @@ export default function DashboardHome() {
         <Button 
           variant="outline" 
           size="sm" 
-          onClick={() => window.location.reload()}
+          onClick={() => fetchData()}
           className="ml-4"
         >
           Retry

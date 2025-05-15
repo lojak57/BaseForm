@@ -1,8 +1,40 @@
 import { Link } from "react-router-dom";
-import { categories } from "@/data/products";
+import { categories } from "@/data/categories";
 import FallbackImage from "@/components/ui/FallbackImage";
+import { useProducts } from "@/context/ProductContext";
 
 const CategoryGrid = () => {
+  const { getProductsByCategory, loading } = useProducts();
+
+  // Function to get a product image for each category
+  const getCategoryProductImage = (categoryId: string) => {
+    // Get products for this category
+    const categoryProducts = getProductsByCategory(categoryId);
+    
+    // If there are products with images, use the first product image
+    if (categoryProducts.length > 0 && categoryProducts[0].defaultImages && categoryProducts[0].defaultImages.length > 0) {
+      return categoryProducts[0].defaultImages[0];
+    }
+    
+    // Look for a product with images from any category as backup if requested category has no products
+    if (categoryId === 'other') {
+      const allProducts = [
+        ...getProductsByCategory('purses'),
+        ...getProductsByCategory('bags'),
+        ...getProductsByCategory('wallets')
+      ];
+      
+      const productWithImage = allProducts.find(p => p.defaultImages && p.defaultImages.length > 0);
+      if (productWithImage) {
+        return productWithImage.defaultImages[0];
+      }
+    }
+    
+    // Fall back to the static category image if no product images are available
+    const category = categories.find(cat => cat.id === categoryId);
+    return category?.image || '/images/placeholder.jpg';
+  };
+
   return (
     <section className="py-16">
       <div className="container mx-auto px-4">
@@ -20,11 +52,17 @@ const CategoryGrid = () => {
             >
               {/* Image section - top 50% */}
               <div className="relative h-48 overflow-hidden">
-                <FallbackImage 
-                  src={category.image} 
-                  alt={category.name} 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
+                {loading ? (
+                  // Show loading skeleton while products are being loaded
+                  <div className="w-full h-full bg-gray-200 animate-pulse"></div>
+                ) : (
+                  <FallbackImage 
+                    src={getCategoryProductImage(category.id)} 
+                    alt={category.name}
+                    fallbackSrc={category.image || '/images/placeholder.jpg'}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                )}
               </div>
               
               {/* Text section - bottom 50% */}

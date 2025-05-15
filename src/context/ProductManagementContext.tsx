@@ -1,9 +1,12 @@
-
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from "react";
 import { toast } from "@/components/ui/sonner";
 import { Product, Fabric } from "@/context/CartContext";
-import { categories } from "@/data/products";
+import { categories } from "@/data/categories";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "./AuthContext";
+
+// Define a constant for this site's source identifier
+const SITE_SOURCE = "vcsews";
 
 interface ProductManagementContextType {
   addProduct: (product: Product) => Promise<void>;
@@ -18,65 +21,60 @@ interface ProductManagementContextType {
 const ProductManagementContext = createContext<ProductManagementContextType | undefined>(undefined);
 
 export function ProductManagementProvider({ children }: { children: ReactNode }) {
+  const { currentTenant } = useAuth();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [lastFetchTime, setLastFetchTime] = useState<number>(0);
 
-  // Fetch products on initial load
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  const fetchProducts = async () => {
+  // Memoize the fetch function to prevent unnecessary re-creation
+  const fetchProducts = useCallback(async (forceFetch = false) => {
+    // Prevent excessive fetching by checking if we fetched recently (within 5 seconds)
+    const now = Date.now();
+    if (!forceFetch && now - lastFetchTime < 5000 && products.length > 0) {
+      return;
+    }
+    
     try {
       setLoading(true);
       setError(null);
       
-      // Fetch products from Supabase
+      // Fetch products from Supabase with nested fabrics data in a single query
       const { data: productsData, error: productsError } = await supabase
         .from('products')
-        .select('*')
+        .select(`
+          *,
+          fabrics (*)
+        `)
+        .eq('source', SITE_SOURCE) // Add filter for vcsews products only
         .order('created_at', { ascending: false });
       
       if (productsError) {
         throw productsError;
       }
       
-      // For each product, fetch its fabrics
-      const productsWithFabrics = await Promise.all(productsData.map(async (product) => {
-        const { data: fabricsData, error: fabricsError } = await supabase
-          .from('fabrics')
-          .select('*')
-          .eq('product_id', product.id);
-        
-        if (fabricsError) {
-          throw fabricsError;
-        }
-        
-        // Convert the Supabase fabric data to our Fabric type
-        const fabrics: Fabric[] = fabricsData.map(fabric => ({
+      // Map the data to our Product type format
+      const mappedProducts = productsData.map(product => ({
+        id: product.id,
+        slug: product.slug,
+        name: product.name,
+        price: product.price,
+        description: product.description || '',
+        categoryId: product.category_id,
+        hasFabricSelection: product.has_fabric_selection,
+        defaultImages: product.default_images || [],
+        fabrics: (product.fabrics || []).map(fabric => ({
           code: fabric.code,
           label: fabric.label,
           upcharge: fabric.upcharge,
           swatch: fabric.swatch || '',
           imgOverride: fabric.img_override || []
-        }));
-        
-        // Return the complete product with fabrics
-        return {
-          id: product.id,
-          slug: product.slug,
-          name: product.name,
-          price: product.price,
-          description: product.description || '',
-          categoryId: product.category_id,
-          hasFabricSelection: product.has_fabric_selection,
-          defaultImages: product.default_images || [],
-          fabrics: fabrics
-        } as Product;
+        })),
+        source: product.source || SITE_SOURCE
       }));
       
-      setProducts(productsWithFabrics);
+      setProducts(mappedProducts);
+      setLastFetchTime(now);
     } catch (err) {
       console.error('Error fetching products:', err);
       setError('Failed to load products');
@@ -84,7 +82,12 @@ export function ProductManagementProvider({ children }: { children: ReactNode })
     } finally {
       setLoading(false);
     }
-  };
+  }, [lastFetchTime, products.length]);
+
+  // Fetch products on initial load and when tenant changes
+  useEffect(() => {
+    fetchProducts(true);
+  }, [currentTenant]);
 
   const addProduct = async (product: Product) => {
     try {
@@ -107,28 +110,52 @@ export function ProductManagementProvider({ children }: { children: ReactNode })
         return;
       }
       
+      // Make sure we have a valid UUID
+      if (!product.id || !isValidUUID(product.id)) {
+        product.id = crypto.randomUUID();
+      }
+      
+      // For products without fabric selection, we can skip creating fabrics
+      // but still set hasFabricSelection to false explicitly
+      const hasFabricSelection = product.hasFabricSelection === true;
+      
+      // If we have fabric selection but no fabrics, create a default one
+      if (hasFabricSelection && (!product.fabrics || product.fabrics.length === 0)) {
+        console.warn("Fabric selection enabled but no fabrics provided, creating default fabric");
+        product.fabrics = [{
+          code: "default",
+          label: "Default",
+          swatch: "",
+          upcharge: 0,
+          imgOverride: []
+        }];
+      }
+      
       // Insert the product into Supabase
       const { data: newProduct, error: productError } = await supabase
         .from('products')
         .insert({
-          id: product.id, // Use the ID if provided, otherwise Supabase will generate one
+          id: product.id,
           slug: product.slug,
           name: product.name,
           description: product.description,
           price: product.price,
           category_id: product.categoryId,
-          has_fabric_selection: product.hasFabricSelection,
-          default_images: product.defaultImages
+          has_fabric_selection: hasFabricSelection,
+          default_images: product.defaultImages,
+          source: SITE_SOURCE // Add source to identify which application the product belongs to
+          // tenant_id will be set automatically by RLS trigger
         })
         .select()
         .single();
         
       if (productError) {
+        console.error('Error adding product:', productError);
         throw productError;
       }
       
-      // If there are fabrics, insert them
-      if (product.fabrics && product.fabrics.length > 0) {
+      // Only insert fabrics if we have fabric selection enabled
+      if (hasFabricSelection && product.fabrics && product.fabrics.length > 0) {
         const fabricsToInsert = product.fabrics.map(fabric => ({
           product_id: newProduct.id,
           code: fabric.code,
@@ -148,16 +175,31 @@ export function ProductManagementProvider({ children }: { children: ReactNode })
       }
       
       // Refresh the products list
-      fetchProducts();
+      fetchProducts(true);
       toast.success("Product added successfully");
     } catch (err) {
       console.error('Error adding product:', err);
-      toast.error("Failed to add product");
+      toast.error(`Failed to add product: ${err instanceof Error ? err.message : JSON.stringify(err)}`);
     }
   };
 
   const updateProduct = async (product: Product) => {
     try {
+      // Ensure the hasFabricSelection field is a boolean
+      const hasFabricSelection = product.hasFabricSelection === true;
+      
+      // If fabric selection is enabled but no fabrics, create a default one
+      if (hasFabricSelection && (!product.fabrics || product.fabrics.length === 0)) {
+        console.warn("Fabric selection enabled but no fabrics provided, creating default fabric");
+        product.fabrics = [{
+          code: "default",
+          label: "Default",
+          swatch: "",
+          upcharge: 0,
+          imgOverride: []
+        }];
+      }
+      
       // Update the product in Supabase
       const { error: productError } = await supabase
         .from('products')
@@ -167,8 +209,9 @@ export function ProductManagementProvider({ children }: { children: ReactNode })
           description: product.description,
           price: product.price,
           category_id: product.categoryId,
-          has_fabric_selection: product.hasFabricSelection,
+          has_fabric_selection: hasFabricSelection,
           default_images: product.defaultImages,
+          source: SITE_SOURCE, // Ensure source is set to vcsews
           updated_at: new Date().toISOString()
         })
         .eq('id', product.id);
@@ -177,45 +220,42 @@ export function ProductManagementProvider({ children }: { children: ReactNode })
         throw productError;
       }
       
-      // Delete existing fabrics and insert new ones
-      if (product.fabrics) {
-        // First delete existing fabrics for this product
-        const { error: deleteFabricsError } = await supabase
-          .from('fabrics')
-          .delete()
-          .eq('product_id', product.id);
-          
-        if (deleteFabricsError) {
-          throw deleteFabricsError;
-        }
+      // Delete existing fabrics for this product
+      const { error: deleteFabricsError } = await supabase
+        .from('fabrics')
+        .delete()
+        .eq('product_id', product.id);
         
-        // Then insert new fabrics if there are any
-        if (product.fabrics.length > 0) {
-          const fabricsToInsert = product.fabrics.map(fabric => ({
-            product_id: product.id,
-            code: fabric.code,
-            label: fabric.label,
-            swatch: fabric.swatch,
-            upcharge: fabric.upcharge,
-            img_override: fabric.imgOverride || []
-          }));
+      if (deleteFabricsError) {
+        throw deleteFabricsError;
+      }
+      
+      // Only insert fabrics if we have fabric selection enabled and fabrics exist
+      if (hasFabricSelection && product.fabrics && product.fabrics.length > 0) {
+        const fabricsToInsert = product.fabrics.map(fabric => ({
+          product_id: product.id,
+          code: fabric.code,
+          label: fabric.label,
+          swatch: fabric.swatch,
+          upcharge: fabric.upcharge,
+          img_override: fabric.imgOverride || []
+        }));
+        
+        const { error: fabricsError } = await supabase
+          .from('fabrics')
+          .insert(fabricsToInsert);
           
-          const { error: insertFabricsError } = await supabase
-            .from('fabrics')
-            .insert(fabricsToInsert);
-            
-          if (insertFabricsError) {
-            throw insertFabricsError;
-          }
+        if (fabricsError) {
+          throw fabricsError;
         }
       }
       
       // Refresh the products list
-      fetchProducts();
+      fetchProducts(true);
       toast.success("Product updated successfully");
     } catch (err) {
       console.error('Error updating product:', err);
-      toast.error("Failed to update product");
+      toast.error(`Failed to update product: ${err instanceof Error ? err.message : 'Unknown error'}`);
     }
   };
 
@@ -241,10 +281,13 @@ export function ProductManagementProvider({ children }: { children: ReactNode })
   };
 
   const getAllProducts = async () => {
-    // Return the current products state or fetch if needed
-    if (products.length === 0 && !loading && !error) {
-      await fetchProducts();
+    // Return the current products if we have them and not in loading state
+    if (products.length > 0 && !loading) {
+      return products;
     }
+    
+    // Otherwise fetch products
+    await fetchProducts(true);
     return products;
   };
 
@@ -273,4 +316,10 @@ export const useProductManagement = () => {
     );
   }
   return context;
+};
+
+// Helper function to validate UUID
+const isValidUUID = (uuid: string) => {
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  return uuidRegex.test(uuid);
 }; 

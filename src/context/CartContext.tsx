@@ -19,6 +19,8 @@ export type Product = {
   defaultImages: string[];
   fabrics: Fabric[];
   hasFabricSelection?: boolean;
+  source?: string;
+  tenant_id?: string;
 };
 
 export type CartItem = {
@@ -64,16 +66,86 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [cart]);
 
   const addToCart = (product: Product, quantity: number, fabricCode: string) => {
+    // Handle products without fabric selection by using a default fabric
+    if (!product.hasFabricSelection) {
+      // Create a cart item without relying on fabric data
+      setCart((prevCart) => {
+        // Check if the item is already in the cart
+        const existingItemIndex = prevCart.findIndex(
+          (item) => item.productId === product.id && item.fabricCode === "default"
+        );
+
+        if (existingItemIndex > -1) {
+          // Item exists, update the quantity
+          const newCart = [...prevCart];
+          newCart[existingItemIndex].quantity += quantity;
+          toast.success("Item quantity updated in your cart");
+          return newCart;
+        } else {
+          // Item doesn't exist, add it with default values
+          toast.success("Item added to your cart");
+          return [
+            ...prevCart,
+            {
+              productId: product.id,
+              name: product.name,
+              price: product.price,
+              quantity,
+              fabricCode: "default",
+              fabricLabel: "Default",
+              image: product.defaultImages[0] || '/images/placeholder.jpg'
+            }
+          ];
+        }
+      });
+      return;
+    }
+
+    // Handle products with fabric selection
+    // Ensure product has fabrics
+    if (!product.fabrics || product.fabrics.length === 0) {
+      toast.error("Cannot add product to cart - no fabric options available");
+      return;
+    }
+
     setCart((prevCart) => {
       // Find the selected fabric
       const selectedFabric = product.fabrics.find((f) => f.code === fabricCode);
-      if (!selectedFabric) return prevCart;
+      if (!selectedFabric) {
+        // Fallback to first fabric if provided fabricCode doesn't exist
+        if (product.fabrics.length > 0) {
+          console.warn("Fabric not found, using first available fabric");
+          // Fix: Don't recursively call addToCart, just use the first fabric directly
+          const defaultFabric = product.fabrics[0];
+          const defaultPrice = product.price + (product.hasFabricSelection ? defaultFabric.upcharge : 0);
+          const defaultImage = (product.hasFabricSelection && defaultFabric.imgOverride && defaultFabric.imgOverride.length > 0)
+            ? defaultFabric.imgOverride[0] 
+            : product.defaultImages[0] || '/images/placeholder.jpg'; // Add fallback image
+          
+          return [
+            ...prevCart,
+            {
+              productId: product.id,
+              name: product.name,
+              price: defaultPrice,
+              quantity,
+              fabricCode: defaultFabric.code,
+              fabricLabel: defaultFabric.label,
+              image: defaultImage
+            }
+          ];
+        }
+        return prevCart;
+      }
 
-      // Calculate price with fabric upcharge
-      const finalPrice = product.price + selectedFabric.upcharge;
+      // Calculate price with fabric upcharge (only if hasFabricSelection is true)
+      const finalPrice = product.price + (product.hasFabricSelection ? selectedFabric.upcharge : 0);
 
       // Determine image to use
-      const image = selectedFabric.imgOverride?.[0] || product.defaultImages[0];
+      const useCustomImage = product.hasFabricSelection && selectedFabric.imgOverride && selectedFabric.imgOverride.length > 0;
+      const image = useCustomImage 
+        ? selectedFabric.imgOverride[0] 
+        : (product.defaultImages[0] || '/images/placeholder.jpg');
 
       // Check if the item with the same product ID and fabric is already in the cart
       const existingItemIndex = prevCart.findIndex(
