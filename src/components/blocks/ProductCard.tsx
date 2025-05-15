@@ -22,11 +22,14 @@ const ProductCard = ({ product }: ProductCardProps) => {
       className="group block rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg relative border border-gray-100"
     >
       <div className="relative aspect-square overflow-hidden bg-gray-100">
-        <FallbackImage
-          src={displayImage}
-          alt={product.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-        />
+        <div className="h-full w-full group-hover:scale-105 transition-transform duration-300">
+          <FallbackImage
+            src={displayImage}
+            alt={product.name}
+            className="w-full h-full"
+            centerCrop={true}
+          />
+        </div>
         
         {/* Gradient overlay for better text contrast */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

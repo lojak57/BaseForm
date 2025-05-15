@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 interface FallbackImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   fallbackSrc?: string;
+  centerCrop?: boolean;
 }
 
 const FallbackImage = ({ 
@@ -9,6 +10,7 @@ const FallbackImage = ({
   alt, 
   fallbackSrc = "/images/placeholder.jpg",
   className,
+  centerCrop = false,
   ...props 
 }: FallbackImageProps) => {
   const [imgSrc, setImgSrc] = useState(src);
@@ -20,6 +22,20 @@ const FallbackImage = ({
       setHasError(true);
     }
   };
+
+  if (centerCrop) {
+    return (
+      <div className={`relative overflow-hidden ${className}`}>
+        <img
+          src={imgSrc}
+          alt={alt}
+          onError={handleError}
+          className="absolute w-full h-full object-cover object-center"
+          {...props}
+        />
+      </div>
+    );
+  }
 
   return (
     <img

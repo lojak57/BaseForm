@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useProducts } from "@/context/ProductContext";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import FallbackImage from "@/components/ui/FallbackImage";
 
 interface HeroCarouselProps {
   title: string;
@@ -153,15 +154,22 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({ title, subtitle, ctaText, c
         {slides.map((slide, index) => (
           <div
             key={`slide-${index}`}
-            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
+            className={`absolute inset-0 transition-opacity duration-1000 ${
               activeSlide === index ? "opacity-100 z-10" : "opacity-0 z-0"
             }`}
-            style={{ 
-              backgroundImage: slide.type !== "mashup" 
-                ? `url(${slide.imageUrl})`
-                : 'none'
-            }}
           >
+            {/* Single product image */}
+            {slide.type !== "mashup" && (
+              <div className="absolute inset-0">
+                <FallbackImage
+                  src={slide.imageUrl}
+                  alt={slide.alt}
+                  className="w-full h-full"
+                  centerCrop={true}
+                />
+              </div>
+            )}
+            
             {/* Dark overlay */}
             <div className="absolute inset-0 bg-darkText/40"></div>
 
@@ -176,10 +184,11 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({ title, subtitle, ctaText, c
                       animation: `fadein ${0.5 + imgIndex * 0.2}s ease-out forwards`
                     }}
                   >
-                    <img 
+                    <FallbackImage 
                       src={img} 
                       alt={`Product ${imgIndex + 1}`}
-                      className="w-full h-full object-cover" 
+                      className="w-full h-full" 
+                      centerCrop={true}
                     />
                     <div className="absolute inset-0 bg-darkText/20"></div>
                   </div>

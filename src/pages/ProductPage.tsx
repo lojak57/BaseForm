@@ -187,7 +187,7 @@ const ProductPage = () => {
         {/* Product details */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Product images */}
-          <div className="sticky top-4">
+          <div className="mb-8 lg:mb-0 lg:sticky lg:top-4">
             <div className="relative rounded-lg overflow-hidden bg-gray-100">
               <Swiper
                 modules={[Pagination, Navigation]}
@@ -198,11 +198,14 @@ const ProductPage = () => {
               >
                 {displayImages.map((image, index) => (
                   <SwiperSlide key={index}>
-                    <FallbackImage
-                      src={image}
-                      alt={`${product.name} - ${index + 1}`}
-                      className="w-full h-[400px] object-contain"
-                    />
+                    <div className="relative aspect-square bg-white">
+                      <FallbackImage
+                        src={image}
+                        alt={`${product.name} - ${index + 1}`}
+                        className="w-full h-full"
+                        centerCrop={true}
+                      />
+                    </div>
                   </SwiperSlide>
                 ))}
               </Swiper>
@@ -214,7 +217,7 @@ const ProductPage = () => {
                 {displayImages.map((image, index) => (
                   <button
                     key={index}
-                    className={`w-16 h-16 rounded overflow-hidden ${
+                    className={`w-16 h-16 rounded overflow-hidden relative ${
                       currentImageIndex === index ? "ring-2 ring-threadGold" : ""
                     }`}
                     onClick={() => setCurrentImageIndex(index)}
@@ -222,7 +225,8 @@ const ProductPage = () => {
                     <FallbackImage
                       src={image}
                       alt={`Thumbnail ${index + 1}`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full"
+                      centerCrop={true}
                     />
                   </button>
                 ))}
@@ -230,8 +234,8 @@ const ProductPage = () => {
             )}
           </div>
 
-          {/* Product info */}
-          <div>
+          {/* Product info - this now starts cleanly after images on mobile */}
+          <div className="mt-2 lg:mt-0">
             <h1 className="text-3xl md:text-4xl font-playfair mb-2">{product.name}</h1>
             
             <div className="flex items-center mb-6">
