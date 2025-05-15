@@ -60,7 +60,7 @@ const CategoryPage = () => {
 
   return (
     <Layout>
-      <div className="py-12">
+      <div className="py-16 relative">
         <div className="container mx-auto px-4">
           {/* Breadcrumb */}
           <nav className="mb-8">
@@ -75,16 +75,22 @@ const CategoryPage = () => {
             </ol>
           </nav>
 
-          <div className="mb-12">
-            <h1 className="font-playfair text-3xl md:text-4xl mb-4">{category.name}</h1>
-            <p className="text-darkGray max-w-2xl">{category.description}</p>
+          <div className="mb-12 relative z-10">
+            <h1 className="font-playfair text-3xl md:text-5xl mb-6">{category.name}</h1>
+            <div className="w-20 h-1 bg-threadGold mb-6"></div>
+            <p className="text-darkGray max-w-2xl text-lg">{category.description}</p>
           </div>
+
+          {/* Decorative background element */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-threadGold/5 rounded-full -z-10 blur-3xl"></div>
 
           {/* Products */}
           {products.length > 0 ? (
-            <CardGallery products={products} />
+            <div className="relative z-10">
+              <CardGallery products={products} />
+            </div>
           ) : (
-            <div className="text-center py-12">
+            <div className="text-center py-16 bg-gray-50 rounded-lg border border-gray-100">
               <p className="text-darkGray mb-8">No products available in this category yet.</p>
               <Link to="/" className="btn-primary">
                 Continue Shopping
