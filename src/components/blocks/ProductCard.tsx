@@ -43,7 +43,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       
       <div className="p-5 bg-white">
         <div className="flex flex-col space-y-2">
-          <h3 className="font-playfair text-lg leading-tight group-hover:text-threadGold transition-colors duration-300">{product.name}</h3>
+          <h3 className="font-playfair text-lg min-h-[3rem] leading-tight group-hover:text-threadGold transition-colors duration-300 line-clamp-2">{product.name}</h3>
           <p className="text-darkGray font-medium">{formatCurrency(product.price)}</p>
           
           {/* Show fabric options count if there are multiple fabrics */}

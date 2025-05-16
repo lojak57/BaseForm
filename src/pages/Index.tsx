@@ -129,7 +129,7 @@ export default function Index() {
               </div>
             </Reveal>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4 sm:px-0">
               {categories.map((category, index) => (
                 <Reveal 
                   key={category.id}
@@ -153,10 +153,10 @@ export default function Index() {
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         />
                       )}
-                      <div className="absolute inset-0 bg-darkText/40 flex items-center justify-center">
-                        <div className="text-center p-4">
-                          <h3 className="text-white font-playfair text-2xl mb-2">{category.name}</h3>
-                          <span className="inline-block bg-threadGold text-darkText px-4 py-2 rounded-full text-sm font-medium">
+                      <div className="absolute inset-0 bg-darkText/50 flex items-center justify-center">
+                        <div className="text-center px-3 py-4 sm:p-4 w-full">
+                          <h3 className="text-white font-playfair text-xl sm:text-2xl mb-3">{category.name}</h3>
+                          <span className="inline-block bg-threadGold text-darkText px-4 py-2 rounded-full text-sm font-medium shadow-sm transition-all duration-300 group-hover:bg-white group-hover:text-threadGold group-hover:shadow-md">
                             View Products
                           </span>
                         </div>
