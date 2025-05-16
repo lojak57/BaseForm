@@ -153,13 +153,20 @@ export default function Index() {
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         />
                       )}
-                      <div className="absolute inset-0 bg-darkText/50 flex items-center justify-center">
-                        <div className="text-center px-3 py-4 sm:p-4 w-full">
-                          <h3 className="text-white font-playfair text-xl sm:text-2xl mb-3">{category.name}</h3>
-                          <span className="inline-block bg-threadGold text-darkText px-4 py-2 rounded-full text-sm font-medium shadow-sm transition-all duration-300 group-hover:bg-white group-hover:text-threadGold group-hover:shadow-md">
-                            View Products
-                          </span>
+                      {/* Stronger gradient overlay for better text contrast */}
+                      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-darkText/20 to-darkText/90"></div>
+                      
+                      {/* Content container positioned at the bottom */}
+                      <div className="absolute inset-x-0 bottom-0 pb-5 pt-10 px-3 text-center">
+                        {/* Category name with dark background for maximum readability */}
+                        <div className="inline-block bg-darkText/85 backdrop-blur-sm px-4 py-2 rounded-md mb-3 transform transition-transform duration-300 w-4/5 mx-auto">
+                          <h3 className="text-white font-playfair text-xl sm:text-2xl font-medium">{category.name}</h3>
                         </div>
+                        <br />
+                        {/* View Products button - larger and more prominent */}
+                        <span className="inline-block bg-threadGold text-darkText px-6 py-2.5 rounded-full text-sm font-bold shadow-md transition-all duration-300 hover:bg-white group-hover:bg-white group-hover:text-threadGold group-hover:shadow-lg">
+                          View Products
+                        </span>
                       </div>
                     </div>
                   </Link>
