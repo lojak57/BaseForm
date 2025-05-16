@@ -37,8 +37,15 @@ export default function ProductWizard() {
   const { productId } = useParams();
   const isEditing = !!productId;
   
-  // Default product description template
-  const defaultDescription = "Handcrafted with care and attention to detail. This premium quality item is designed to be both functional and stylish. Made with high-quality materials that ensure durability and long-lasting performance.";
+  // Get default product description from localStorage or use fallback
+  const getDefaultDescription = () => {
+    const savedSettings = localStorage.getItem('vcsews-settings');
+    if (savedSettings) {
+      const settings = JSON.parse(savedSettings);
+      return settings.defaultProductDescription || "Handcrafted with care and attention to detail. This premium quality item is designed to be both functional and stylish. Made with high-quality materials that ensure durability and long-lasting performance.";
+    }
+    return "Handcrafted with care and attention to detail. This premium quality item is designed to be both functional and stylish. Made with high-quality materials that ensure durability and long-lasting performance.";
+  };
   
   // Basic product state
   const [step, setStep] = useState(1);
@@ -47,7 +54,7 @@ export default function ProductWizard() {
     slug: "",
     name: "",
     price: 0,
-    description: defaultDescription,
+    description: getDefaultDescription(),
     categoryId: "",
     defaultImages: ["", "", ""],
     fabrics: [],

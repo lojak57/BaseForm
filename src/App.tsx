@@ -29,6 +29,7 @@ import DashboardHome from "./pages/admin/DashboardHome";
 import ProductsPage from "./pages/admin/ProductsPage";
 import ProductWizard from "./pages/admin/ProductWizard";
 import DiagnosticsPage from "./pages/admin/DiagnosticsPage";
+import SettingsPage from "./pages/admin/SettingsPage";
 
 const queryClient = new QueryClient();
 
@@ -66,6 +67,7 @@ const App = () => (
                     <Route path="products" element={<ProductsPage />} />
                     <Route path="products/new" element={<ProductWizard />} />
                     <Route path="products/edit/:productId" element={<ProductWizard />} />
+                    <Route path="settings" element={<SettingsPage />} />
                     <Route path="diagnostics" element={<DiagnosticsPage />} />
                   </Route>
                   

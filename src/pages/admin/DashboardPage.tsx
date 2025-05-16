@@ -2,6 +2,7 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Cog, Home, Package, PlusCircle, Info } from "lucide-react";
 
 export default function DashboardPage() {
   const { logout } = useAuth();
@@ -30,25 +31,29 @@ export default function DashboardPage() {
       
       <div className="container mx-auto px-4 py-8 flex">
         <aside className="w-64 pr-8">
-          <nav className="space-y-2">
-            <Link to="/admin" className="block py-2 px-4 hover:bg-gray-100 rounded">
-              Dashboard
+          <nav className="space-y-1">
+            <Link to="/admin" className="flex items-center py-2 px-4 hover:bg-gray-100 rounded">
+              <Home className="h-4 w-4 mr-3 text-gray-500" />
+              <span>Dashboard</span>
             </Link>
-            <Link to="/admin/products" className="block py-2 px-4 hover:bg-gray-100 rounded">
-              All Products
+            <Link to="/admin/products" className="flex items-center py-2 px-4 hover:bg-gray-100 rounded">
+              <Package className="h-4 w-4 mr-3 text-gray-500" />
+              <span>Products</span>
             </Link>
-            <Link to="/admin/products/new" className="block py-2 px-4 hover:bg-gray-100 rounded text-threadGold font-medium">
-              Add New Product
+            <Link to="/admin/products/new" className="flex items-center py-2 px-4 hover:bg-gray-100 rounded">
+              <PlusCircle className="h-4 w-4 mr-3 text-threadGold" />
+              <span className="text-threadGold font-medium">Add New Product</span>
             </Link>
+            <Link to="/admin/settings" className="flex items-center py-2 px-4 hover:bg-gray-100 rounded">
+              <Cog className="h-4 w-4 mr-3 text-gray-500" />
+              <span>Store Settings</span>
+            </Link>
+            
             <Separator className="my-4" />
-            <p className="px-4 text-xs text-gray-500 mb-2">Tools</p>
-            <Link to="/admin/diagnostics" className="block py-2 px-4 hover:bg-gray-100 rounded text-sm">
-              System Diagnostics
-            </Link>
-            <Separator className="my-4" />
-            <p className="px-4 text-xs text-gray-500 mb-2">Help</p>
-            <Link to="/admin/help" className="block py-2 px-4 hover:bg-gray-100 rounded text-sm">
-              Admin Guide
+            
+            <Link to="/admin/diagnostics" className="flex items-center py-2 px-4 hover:bg-gray-100 rounded text-sm">
+              <Info className="h-4 w-4 mr-3 text-gray-500" />
+              <span>System Diagnostics</span>
             </Link>
           </nav>
         </aside>
