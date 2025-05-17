@@ -6,7 +6,7 @@ import { toast } from "@/components/ui/sonner";
 import { useAuth } from "./AuthContext";
 
 // Define a constant for this site's source identifier
-const SITE_SOURCE = "vcsews";
+const SITE_SOURCE = "default";
 
 interface ProductContextType {
   products: Product[];

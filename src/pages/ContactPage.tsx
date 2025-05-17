@@ -88,11 +88,12 @@ const ContactPage = () => {
               <h3 className="font-playfair text-2xl md:text-3xl mb-4">Contact Us</h3>
               
               <div className="mb-6 text-lg">
-                <p className="text-darkText mb-2">
-                  <a href="mailto:hello@vcsews.com" className="text-threadGold hover:underline transition-colors font-medium">
-                    hello@vcsews.com
+                <div>
+                  <p className="font-semibold">Email:</p>
+                  <a href="mailto:hello@your-domain.com" className="text-threadGold hover:underline transition-colors font-medium">
+                    hello@your-domain.com
                   </a>
-                </p>
+                </div>
                 <p className="text-darkText/80">
                   For custom orders, wholesale inquiries, or questions about your purchase
                 </p>

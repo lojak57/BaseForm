@@ -1,4 +1,4 @@
-# VCSews Platform: Architecture & Development Guide
+# White-Label-Webshop: Architecture & Development Guide
 
 ## Table of Contents
 
@@ -16,11 +16,11 @@
 
 ## Overview & Ethos
 
-The VCSews platform is a multi-tenant e-commerce solution that enables artisanal crafters and small businesses to showcase and sell handcrafted products. Built upon TrueForm's multi-tenant architecture, the platform prioritizes:
+The White-Label-Webshop platform is a multi-tenant e-commerce solution that enables businesses to showcase and sell products. Built upon a flexible multi-tenant architecture, the platform prioritizes:
 
 - **Tenant Isolation**: Strict separation between different shops' data and products
-- **Customization**: Flexible product configurations, especially fabric selection
-- **User Experience**: Clean, intuitive interfaces that highlight artisanal products
+- **Customization**: Flexible product configurations, especially product options
+- **User Experience**: Clean, intuitive interfaces that highlight products
 - **Accessibility**: Responsive design that works well across all devices
 - **Simplicity**: Streamlined checkout process with minimal friction
 
@@ -57,12 +57,12 @@ The platform serves two primary user types:
 
 ## Multi-Tenant Infrastructure
 
-The multi-tenant architecture is a cornerstone of the VCSews platform, enabling multiple independent shops to operate within a single codebase and database.
+The multi-tenant architecture is a cornerstone of the White-Label-Webshop platform, enabling multiple independent shops to operate within a single codebase and database.
 
 ### Tenant Identification
 
 - Each tenant is identified by a unique `tenant_id`
-- The default tenant for VCSews uses the source identifier `vcsews`
+- The default template tenant uses the source identifier `default`
 - Tenant isolation is enforced at multiple levels:
   - Database: Via Row Level Security policies
   - Application: Through context-aware data fetching
@@ -73,7 +73,7 @@ The multi-tenant architecture is a cornerstone of the VCSews platform, enabling 
 All database tables with tenant-specific data have RLS policies applied. Key tables include:
 
 - `products`: Contains all shop products with tenant segregation
-- `fabrics`: Stores fabric options for products
+- `product_options`: Stores customization options for products
 - `purchase_records`: Tracks completed purchases by tenant
 
 The RLS policies typically follow this pattern:
@@ -119,7 +119,7 @@ src/
 
 - `Header.tsx`: Main navigation with search functionality
 - `ProductCard.tsx`: Displays product information in listings
-- `ProductPage.tsx`: Detailed product view with fabric selection
+- `ProductPage.tsx`: Detailed product view with customization options
 - `CheckoutPage.tsx`: Multi-step checkout process
 - `ImagesStep.tsx`: Image upload with progress indicators
 - `StripeCheckout.tsx`: Stripe payment integration
@@ -150,7 +150,7 @@ src/
 
 ### Cart Flow
 
-1. Products are added to cart with optional fabric selection
+1. Products are added to cart with optional customization selection
 2. Cart state is persisted in localStorage
 3. Cart items are displayed in `CartPage.tsx`
 4. Checkout collects user information in `CheckoutPage.tsx`
@@ -163,7 +163,7 @@ src/
 
 1. Browse products by category or search
 2. View detailed product information
-3. Select fabric options (when available)
+3. Select customization options (when available)
 4. Add products to cart
 5. Complete checkout with shipping information
 6. Process payment through Stripe
@@ -174,7 +174,7 @@ src/
 1. Log in to admin dashboard
 2. View sales data and product inventory
 3. Add new products with the product wizard
-4. Configure product details and fabric options
+4. Configure product details and customization options
 5. Upload product images
 6. Edit existing products
 7. View diagnostic information
@@ -187,10 +187,10 @@ src/
 - Added explicit tenant filtering in database queries
 - Implemented tenant context in application state
 
-### Fabric Selection Enhancements
+### Product Customization Enhancements
 
-- Made fabric selection conditional based on product settings
-- Added default fabric handling for products without fabric selection
+- Made option selection conditional based on product settings
+- Added default handling for products without customization options
 - Fixed cart and pricing logic for different product types
 - Improved messaging about product availability
 
@@ -291,4 +291,4 @@ When adding new multi-tenant functionality:
 
 ---
 
-This guide serves as a comprehensive reference for understanding and extending the VCSews platform. All development should adhere to these principles to maintain code quality, security, and the multi-tenant architecture. 
+This guide serves as a comprehensive reference for understanding and extending the White-Label-Webshop platform. All development should adhere to these principles to maintain code quality, security, and the multi-tenant architecture. 

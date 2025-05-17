@@ -161,6 +161,39 @@ export default function DashboardHome() {
             </div>
           </CardContent>
         </Card>
+        
+        <Card className="overflow-hidden sm:col-span-2 md:col-span-1">
+          <CardHeader className="pb-2">
+            <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+              <BarChart3 className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" />
+              <span>Sales Analytics</span>
+            </CardTitle>
+            <CardDescription className="text-xs md:text-sm">Track revenue and performance</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-between">
+              <div className="space-y-1">
+                <p className="text-sm text-gray-500">View detailed reports on:</p>
+                <ul className="text-sm space-y-1">
+                  <li className="flex items-center gap-1 text-gray-600">
+                    <span className="w-1.5 h-1.5 rounded-full bg-threadGold"></span>
+                    Sales trends and metrics
+                  </li>
+                  <li className="flex items-center gap-1 text-gray-600">
+                    <span className="w-1.5 h-1.5 rounded-full bg-threadGold"></span>
+                    Top selling products
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div className="mt-3 md:mt-4">
+              <Link to="/admin/analytics" className="text-xs md:text-sm text-threadGold hover:underline inline-flex items-center">
+                <span>View Analytics</span>
+                <span className="ml-1">→</span>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Quick links grid for mobile */}

@@ -39,7 +39,7 @@ export default function ProductWizard() {
   
   // Get default product description from localStorage or use fallback
   const getDefaultDescription = () => {
-    const savedSettings = localStorage.getItem('vcsews-settings');
+    const savedSettings = localStorage.getItem('webshop-settings');
     if (savedSettings) {
       const settings = JSON.parse(savedSettings);
       return settings.defaultProductDescription || "Handcrafted with care and attention to detail. This premium quality item is designed to be both functional and stylish. Made with high-quality materials that ensure durability and long-lasting performance.";

@@ -39,7 +39,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           
           // Extract tenant from user metadata if available
           if (newSession?.user) {
-            const tenant = newSession.user.app_metadata?.app_name || 'vcsews';
+            const tenant = newSession.user.app_metadata?.app_name || 'default';
             setCurrentTenant(tenant);
           }
         } 
@@ -58,7 +58,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           
           // Extract tenant from user metadata if available
           if (newSession?.user) {
-            const tenant = newSession.user.app_metadata?.app_name || 'vcsews';
+            const tenant = newSession.user.app_metadata?.app_name || 'default';
             setCurrentTenant(tenant);
           }
         }
@@ -82,7 +82,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         
         // Extract tenant from user metadata if available
         if (session?.user) {
-          const tenant = session.user.app_metadata?.app_name || 'vcsews';
+          const tenant = session.user.app_metadata?.app_name || 'default';
           setCurrentTenant(tenant);
         }
       }
@@ -139,8 +139,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (data.user) {
         // Check if user has access to this specific app
-        const appAccess = data.user.app_metadata?.vcsews_access === true || 
-                         data.user.user_metadata?.apps?.includes('vcsews');
+        const appAccess = data.user.app_metadata?.webshop_access === true || 
+                         data.user.user_metadata?.apps?.includes('webshop');
 
         if (!appAccess) {
           // User doesn't have access to this specific app
@@ -150,7 +150,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
 
         // Set current tenant from metadata
-        const tenant = data.user.app_metadata?.app_name || 'vcsews';
+        const tenant = data.user.app_metadata?.app_name || 'default';
         setCurrentTenant(tenant);
 
         toast.success("Successfully logged in");

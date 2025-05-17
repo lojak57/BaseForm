@@ -50,7 +50,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   // Load cart from localStorage on component mount
   useEffect(() => {
-    const savedCart = localStorage.getItem("vcsews-cart");
+    const savedCart = localStorage.getItem("webshop-cart");
     if (savedCart) {
       try {
         setCart(JSON.parse(savedCart));
@@ -62,7 +62,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   // Save cart to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem("vcsews-cart", JSON.stringify(cart));
+    localStorage.setItem("webshop-cart", JSON.stringify(cart));
   }, [cart]);
 
   const addToCart = (product: Product, quantity: number, fabricCode: string) => {

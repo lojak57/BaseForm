@@ -3,7 +3,7 @@ import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Cog, Home, Package, PlusCircle, Info, Scissors, BookOpen, Menu, X, LogOut, ExternalLink } from "lucide-react";
+import { Cog, Home, Package, PlusCircle, Info, Scissors, BookOpen, Menu, X, LogOut, ExternalLink, BarChart3 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function DashboardPage() {
@@ -47,6 +47,7 @@ export default function DashboardPage() {
       icon: PlusCircle, 
       highlight: true 
     },
+    { path: "/admin/analytics", label: "Sales Analytics", icon: BarChart3 },
     { path: "/admin/fabrics", label: "Fabric Library", icon: Scissors },
     { path: "/admin/settings", label: "Store Settings", icon: Cog },
     { path: "/admin/guide", label: "Admin Guide", icon: BookOpen },

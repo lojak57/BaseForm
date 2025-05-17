@@ -1,6 +1,6 @@
-# VCSews E-Commerce Platform
+# White-Label E-Commerce Platform
 
-This is a multi-tenant e-commerce platform built for VCSews, featuring a modern UI, comprehensive product management, and seamless checkout experience.
+This is a multi-tenant e-commerce solution that enables businesses to showcase and sell products with their own branding. Built with a robust multi-tenant architecture, this platform can be quickly customized for various product types and industries.
 
 ## Key Features
 
@@ -13,7 +13,7 @@ This is a multi-tenant e-commerce platform built for VCSews, featuring a modern 
 - Product browsing by category
 - Product search functionality
 - Detailed product pages
-- Customized fabric selection
+- Customized product options
 - Responsive design for all devices
 - Cart management
 - Secure checkout flow
@@ -23,7 +23,7 @@ This is a multi-tenant e-commerce platform built for VCSews, featuring a modern 
 - Dashboard with sales insights
 - Product management (add, edit, delete)
 - Image upload with progress indicators
-- Optional fabric selection configuration
+- Optional product customization configuration
 
 ### Payment Processing
 - Stripe integration for secure payments
@@ -78,12 +78,12 @@ The application requires the following environment variables:
 ## Recent Enhancements
 
 ### Tenant Isolation
-- Fixed tenant isolation using Row Level Security (RLS)
-- Prevented products from another tenant appearing in the VCSews shop
+- Implemented tenant isolation using Row Level Security (RLS)
+- Prevented cross-tenant data access
 
-### Fabric Selection
-- Made fabric selection UI conditional based on product settings
-- Added default fabric handling for products without fabric selection
+### Product Customization
+- Made product option selection UI conditional based on product settings
+- Added default options handling for products without customization
 - Fixed cart and pricing logic for different product types
 - Added clear messaging about product availability
 
@@ -94,8 +94,8 @@ The application requires the following environment variables:
 - Created a confirmation thank-you page
 
 ### UI/UX Improvements
-- Increased logo size and improved responsive layout
-- Fixed product creation workflow to make fabric selection optional
+- Improved responsive layout
+- Fixed product creation workflow to make customization optional
 - Added pre-populated product description template
 - Implemented better image upload indicators with progress bar
 - Enhanced search functionality for products
@@ -108,26 +108,23 @@ The application requires the following environment variables:
 - Added better loading indicators
 - Improved form validation
 
-## License
-Proprietary - All rights reserved
+## Product Setup
 
-## Product Images
+The platform can be customized for various product types including but not limited to:
 
-The website features high-quality product images for:
-
-- Crossbody bags
-- Tote bags
-- Clutch purses
-- Mini backpacks
-
-Each product has multiple fabric options with corresponding images. All images are sourced from Unsplash under their free-to-use license.
+- Clothing and apparel
+- Digital products
+- Home goods
+- Electronics
+- Food and beverage
+- Art and crafts
 
 ### Image Structure
 
 Images are organized in the following directories:
 
-- `/public/images/products/{category}/{product-name}-{fabric}.jpg` - Product images
-- `/public/images/swatches/{fabric}.jpg` - Fabric swatches
+- `/public/images/products/{category}/{product-name}-{option}.jpg` - Product images
+- `/public/images/options/{option}.jpg` - Product option thumbnails
 - `/public/images/categories/{category}.jpg` - Category images
 
 ## Development
@@ -147,20 +144,6 @@ npm install
 3. Start the development server
 ```bash
 npm run dev
-```
-
-### Image Generation
-
-The realistic product images were implemented using the `download-images.js` script, which:
-
-1. Creates necessary image directories
-2. Downloads high-quality images from Unsplash
-3. Places them in the appropriate folders based on product and fabric type
-
-To re-run the image download script:
-
-```bash
-node download-images.js
 ```
 
 ## Deployment
@@ -185,11 +168,7 @@ Alternatively, you can connect your GitHub repository to Vercel for automatic de
 
 ### Admin Access
 
-The admin dashboard can be accessed at `/admin/login` with these default credentials:
-- Username: `admin`
-- Password: `vcseues2024`
-
-Make sure to change these credentials in a production environment.
+The admin dashboard can be accessed at `/admin/login` with the credentials you set during setup.
 
 ## Technologies Used
 
@@ -198,6 +177,8 @@ Make sure to change these credentials in a production environment.
 - Vite
 - Tailwind CSS
 - ShadCN UI Components
+- Supabase
+- Stripe
 
 ## License
 
@@ -205,4 +186,4 @@ This project is licensed under the MIT License.
 
 ## Credits
 
-All product images are from [Unsplash](https://unsplash.com) and are used under the Unsplash License.
+Default product images are from [Unsplash](https://unsplash.com) and are used under the Unsplash License.

@@ -32,3 +32,22 @@ export function slugify(text: string): string {
     .replace(/^-+/, '')           // Trim - from start of text
     .replace(/-+$/, '');          // Trim - from end of text
 }
+
+/**
+ * Generates a placeholder image URL with the given text and colors
+ */
+export const generatePlaceholderImage = (text: string, bgColor: string = '#3B82F6', textColor: string = 'FFFFFF') => {
+  // Remove # from hex color if present
+  const bg = bgColor.replace('#', '');
+  const fg = textColor.replace('#', '');
+  
+  // Get first letter of each word and uppercase it
+  const initials = text
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase())
+    .join('')
+    .substr(0, 2);
+
+  // Create placeholder URL (using https://placehold.co service or similar)
+  return `https://placehold.co/400x400/${bg}/${fg}?text=${initials}`;
+};

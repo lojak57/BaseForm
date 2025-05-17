@@ -1,5 +1,5 @@
-# VC Sews - Robots.txt
-# https://vcsews.com
+# White-Label Webshop - Robots.txt
+# https://your-domain.com
 
 # Allow all crawlers
 User-agent: *
@@ -13,4 +13,4 @@ Disallow: /checkout
 Disallow: /cart
 
 # Sitemap location
-Sitemap: https://vcsews.com/sitemap.xml
+Sitemap: https://your-domain.com/sitemap.xml

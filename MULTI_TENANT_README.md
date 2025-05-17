@@ -1,6 +1,6 @@
-# Multi-Tenant Architecture for VCSews Platform
+# Multi-Tenant Architecture for White-Label-Webshop Platform
 
-This document explains how the multi-tenant database architecture works for the VCSews platform, allowing you to run multiple webshops from a single database while maintaining data isolation.
+This document explains how the multi-tenant database architecture works for the White-Label-Webshop platform, allowing you to run multiple webshops from a single database while maintaining data isolation.
 
 ## Overview
 
@@ -29,7 +29,7 @@ The multi-tenant architecture allows you to:
 
 1. Run the migration script to add tenant architecture:
    ```
-   psql -U postgres -h mpltvzpsgijpjcdacicp.supabase.co -d postgres -f migrations/01-add-tenant-architecture.sql
+   psql -U postgres -h your-supabase-host.supabase.co -d postgres -f migrations/01-add-tenant-architecture.sql
    ```
 
 2. Create users for each webshop using the utility script:

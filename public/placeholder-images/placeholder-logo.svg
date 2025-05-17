@@ -1,0 +1,5 @@
+<svg width="300" height="120" xmlns="http://www.w3.org/2000/svg">
+  <rect width="300" height="120" fill="#f0f0f0" rx="10" ry="10"/>
+  <text x="150" y="55" font-family="Arial, sans-serif" font-size="24" text-anchor="middle" fill="#555555">Your Logo</text>
+  <text x="150" y="85" font-family="Arial, sans-serif" font-size="18" text-anchor="middle" fill="#777777">Here</text>
+</svg> 

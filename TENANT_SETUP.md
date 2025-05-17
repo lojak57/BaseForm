@@ -1,6 +1,6 @@
 # Tenant Setup Guide
 
-This guide provides step-by-step instructions for setting up new tenants/webshops in the multi-tenant VCSews platform.
+This guide provides step-by-step instructions for setting up new tenants/webshops in the multi-tenant White-Label-Webshop platform.
 
 ## Prerequisites
 
@@ -28,7 +28,7 @@ This guide provides step-by-step instructions for setting up new tenants/webshop
    
    Example:
    ```
-   node create-webshop-user.js trueform admin@trueform.com securepassword123
+   node create-webshop-user.js myshop admin@myshop.com securepassword123
    ```
 
 2. This creates a user with:
@@ -41,14 +41,14 @@ This guide provides step-by-step instructions for setting up new tenants/webshop
    node init-tenant-products.js <shop-name>
    ```
    
-   This will create sample products and fabric options for the new tenant.
+   This will create sample products and customization options for the new tenant.
 
 4. Verify the tenant is correctly configured:
    ```
    node verify-tenant.js <shop-name>
    ```
    
-   This will check for users, products, and fabrics associated with the tenant.
+   This will check for users, products, and options associated with the tenant.
 
 5. Log in using these credentials in the admin panel to create or manage products for this specific tenant.
 

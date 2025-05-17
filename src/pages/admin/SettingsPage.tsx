@@ -66,7 +66,7 @@ export default function SettingsPage() {
   
   // Load settings from localStorage on mount
   useEffect(() => {
-    const savedSettings = localStorage.getItem('vcsews-settings');
+    const savedSettings = localStorage.getItem('webshop-settings');
     if (savedSettings) {
       setSettings(JSON.parse(savedSettings));
     }
@@ -124,7 +124,7 @@ export default function SettingsPage() {
         }));
         
         // Save updated settings to localStorage
-        localStorage.setItem('vcsews-settings', JSON.stringify({
+        localStorage.setItem('webshop-settings', JSON.stringify({
           ...settings,
           logoUrl: url
         }));
@@ -162,7 +162,7 @@ export default function SettingsPage() {
   
   // Handle saving settings
   const saveSettings = () => {
-    localStorage.setItem('vcsews-settings', JSON.stringify(settings));
+    localStorage.setItem('webshop-settings', JSON.stringify(settings));
     toast.success("Settings saved successfully");
   };
   

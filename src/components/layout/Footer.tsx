@@ -10,11 +10,11 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* About Column */}
           <div>
-            <h3 className="font-playfair text-xl mb-4">About VC Sews</h3>
+            <h3 className="font-playfair text-xl mb-4">About White-Label Webshop</h3>
             <p className="text-gray-300 mb-4">
-              Handcrafted purses and bags made with love in Colorado. 
-              Each piece is uniquely designed using quality fabrics and 
-              meticulous attention to detail.
+              A fully customizable e-commerce template with multi-tenant support.
+              Build beautiful online stores with comprehensive product management
+              and seamless checkout experiences.
             </p>
             <div className="flex items-center space-x-4 mt-6">
               <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-threadGold">
@@ -54,7 +54,7 @@ const Footer = () => {
               ))}
               <li>
                 <Link to="/contact" className="text-gray-300 hover:text-threadGold transition-colors">
-                  Custom Orders
+                  Contact Us
                 </Link>
               </li>
             </ul>
@@ -64,17 +64,17 @@ const Footer = () => {
           <div>
             <h3 className="font-playfair text-xl mb-4">Contact</h3>
             <address className="not-italic text-gray-300">
-              <p className="mb-2">VC Sews</p>
-              <p className="mb-2">123 Stitch Lane</p>
-              <p className="mb-2">Boulder, CO 80303</p>
+              <p className="mb-2">White-Label Webshop</p>
+              <p className="mb-2">123 Main Street</p>
+              <p className="mb-2">Your City, YS 12345</p>
               <p className="mb-2">
-                <a href="tel:+13039876543" className="hover:text-threadGold transition-colors">
-                  (303) 987-6543
+                <a href="tel:+15555555555" className="hover:text-threadGold transition-colors">
+                  (555) 555-5555
                 </a>
               </p>
               <p>
-                <a href="mailto:hello@vcsews.com" className="hover:text-threadGold transition-colors">
-                  hello@vcsews.com
+                <a href="mailto:hello@your-domain.com" className="hover:text-threadGold transition-colors">
+                  hello@your-domain.com
                 </a>
               </p>
             </address>
@@ -82,7 +82,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-gray-700 mt-12 pt-8 text-center text-gray-400">
-          <p>&copy; {currentYear} VC Sews. All rights reserved.</p>
+          <p>&copy; {currentYear} White-Label Webshop. All rights reserved.</p>
           <div className="flex justify-center space-x-6 mt-4 text-sm">
             <Link to="/privacy" className="hover:text-threadGold transition-colors">Privacy Policy</Link>
             <Link to="/terms" className="hover:text-threadGold transition-colors">Terms of Service</Link>

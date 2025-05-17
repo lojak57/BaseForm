@@ -1,5 +1,6 @@
 // Force Vercel rebuild - App.tsx modified on May 15, 2024
-// This is the main app component for VCSews
+// This is the main app component for White-Label-Webshop
+import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -11,6 +12,7 @@ import { ProductManagementProvider } from "@/context/ProductManagementContext";
 import { ProductProvider } from "@/context/ProductContext";
 import { FabricProvider } from "@/context/FabricContext";
 import { ProtectedRoute } from "./components/admin/ProtectedRoute";
+import AnalyticsSkeleton from "./components/admin/AnalyticsSkeleton";
 
 // Pages
 import Index from "./pages/Index";
@@ -22,6 +24,8 @@ import ThankYouPage from "./pages/ThankYouPage";
 import ContactPage from "./pages/ContactPage";
 import NotFound from "./pages/NotFound";
 import SearchPage from "./pages/SearchPage";
+import Demo from "./pages/Demo";
+import Signup from "./pages/Signup";
 
 // Admin Pages
 import LoginPage from "./pages/admin/LoginPage";
@@ -36,6 +40,9 @@ import FabricEditor from "./pages/admin/FabricEditor";
 import DiagnosticsPage from "./pages/admin/DiagnosticsPage";
 import SettingsPage from "./pages/admin/SettingsPage";
 import AdminGuidePage from "./pages/admin/AdminGuidePage";
+
+// Lazy-loaded analytics page
+const AnalyticsPage = lazy(() => import("./pages/admin/AnalyticsPage"));
 
 const queryClient = new QueryClient();
 
@@ -61,6 +68,8 @@ const App = () => (
                   <Route path="/thanks" element={<ThankYouPage />} />
                   <Route path="/contact" element={<ContactPage />} />
                   <Route path="/search" element={<SearchPage />} />
+                  <Route path="/demo" element={<Demo />} />
+                  <Route path="/signup" element={<Signup />} />
                   
                   {/* Admin routes */}
                   <Route path="/admin/login" element={<LoginPage />} />
@@ -79,6 +88,11 @@ const App = () => (
                     <Route path="fabrics" element={<FabricsPage />} />
                     <Route path="fabrics/new" element={<FabricEditor />} />
                     <Route path="fabrics/edit/:fabricId" element={<FabricEditor />} />
+                    <Route path="analytics" element={
+                      <Suspense fallback={<AnalyticsSkeleton />}>
+                        <AnalyticsPage />
+                      </Suspense>
+                    } />
                     <Route path="settings" element={<SettingsPage />} />
                     <Route path="guide" element={<AdminGuidePage />} />
                     <Route path="diagnostics" element={<DiagnosticsPage />} />

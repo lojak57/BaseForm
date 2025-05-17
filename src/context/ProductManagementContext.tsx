@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "./AuthContext";
 
 // Define a constant for this site's source identifier
-const SITE_SOURCE = "vcsews";
+const SITE_SOURCE = "default";
 
 interface ProductManagementContextType {
   addProduct: (product: Product) => Promise<void>;
@@ -46,7 +46,7 @@ export function ProductManagementProvider({ children }: { children: ReactNode })
           *,
           fabrics (*)
         `)
-        .eq('source', SITE_SOURCE) // Add filter for vcsews products only
+        .eq('source', SITE_SOURCE) // Add filter for products with matching source
         .order('created_at', { ascending: false });
       
       if (productsError) {
@@ -143,7 +143,7 @@ export function ProductManagementProvider({ children }: { children: ReactNode })
           category_id: product.categoryId,
           has_fabric_selection: hasFabricSelection,
           default_images: product.defaultImages,
-          source: SITE_SOURCE // Add source to identify which application the product belongs to
+          source: SITE_SOURCE, // Ensure source is set correctly
           // tenant_id will be set automatically by RLS trigger
         })
         .select()
@@ -211,7 +211,7 @@ export function ProductManagementProvider({ children }: { children: ReactNode })
           category_id: product.categoryId,
           has_fabric_selection: hasFabricSelection,
           default_images: product.defaultImages,
-          source: SITE_SOURCE, // Ensure source is set to vcsews
+          source: SITE_SOURCE, // Ensure source is set correctly
           updated_at: new Date().toISOString()
         })
         .eq('id', product.id);

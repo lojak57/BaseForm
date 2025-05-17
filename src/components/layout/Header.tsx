@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { categories } from "@/data/categories";
-import { ShoppingCart, Menu, Search } from "lucide-react";
+import { ShoppingCart, Menu, Search, User, Heart } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 // Default theme settings if not customized
 const DEFAULT_SETTINGS = {
-  logoUrl: '/lovable-uploads/463dd640-f9c6-4abf-aa5f-4e6927af1de5.png',
-  primaryColor: '#D4AF37', // threadGold
-  textColor: '#1F1E1D',   // darkText
-  bgColor: '#FDFCF7'      // ivory
+  logoUrl: '/placeholder-images/placeholder-logo.svg',
+  primaryColor: '#3B82F6', // blue
+  textColor: '#1E293B',   // slate-800
+  bgColor: '#F1F5F9'      // slate-100
 };
 
 const Header = () => {
@@ -22,10 +22,14 @@ const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [themeSettings, setThemeSettings] = useState(DEFAULT_SETTINGS);
   const navigate = useNavigate();
+  const location = useLocation();
 
+  // Get logo from localStorage settings if available
+  const [logoUrl, setLogoUrl] = useState<string | undefined>(undefined);
+  
   // Load theme settings from localStorage
   useEffect(() => {
-    const savedSettings = localStorage.getItem('vcsews-settings');
+    const savedSettings = localStorage.getItem('webshop-settings');
     if (savedSettings) {
       try {
         const parsedSettings = JSON.parse(savedSettings);
@@ -65,12 +69,28 @@ const Header = () => {
     }
   };
 
+  // Check if a link is active
+  const isActive = (path: string) => {
+    if (path === '/' && location.pathname === '/') {
+      return true;
+    }
+    if (path !== '/' && location.pathname.startsWith(path)) {
+      return true;
+    }
+    return false;
+  };
+
   return (
     <header
-      className={`fixed w-full top-0 left-0 z-50 transition-all duration-300 ${
-        isScrolled ? "shadow-md py-2" : "py-4"
+      className={`fixed w-full top-0 left-0 z-50 backdrop-blur-sm transition-all duration-300 ${
+        isScrolled ? "shadow-sm py-1.5" : "py-2"
       }`}
-      style={{ backgroundColor: isScrolled ? themeSettings.bgColor : `${themeSettings.bgColor}E6` }} // E6 = 90% opacity
+      style={{ 
+        backgroundColor: isScrolled 
+          ? `${themeSettings.bgColor}F0` 
+          : `${themeSettings.bgColor}E0`,
+        borderBottom: isScrolled ? '1px solid rgba(0,0,0,0.05)' : 'none'
+      }}
     >
       <div className="container mx-auto flex items-center justify-between px-4">
         {/* Logo */}
@@ -78,7 +98,7 @@ const Header = () => {
           <img 
             src={themeSettings.logoUrl} 
             alt="Store Logo" 
-            className="h-[100px] md:h-[140px] w-auto object-contain transition-all duration-300"
+            className="h-[40px] md:h-[48px] w-auto object-contain transition-all duration-300"
             onError={(e) => {
               (e.target as HTMLImageElement).src = DEFAULT_SETTINGS.logoUrl;
             }}
@@ -91,44 +111,79 @@ const Header = () => {
             <Input
               type="search"
               placeholder="Search products..."
-              className="w-full pr-10"
+              className="w-full pr-10 py-1.5 rounded-full border-gray-200 bg-white/90 focus:bg-white focus:border-threadGold"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <button type="submit" className="absolute right-3 top-1/2 transform -translate-y-1/2">
-              <Search className="h-4 w-4 text-gray-500" />
+            <button 
+              type="submit" 
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-threadGold transition-colors"
+            >
+              <Search className="h-4 w-4" />
             </button>
           </div>
         </form>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
-          <Link to="/" className="font-medium text-darkText hover:text-threadGold stitch-hover">
+        <nav className="hidden md:flex items-center space-x-5">
+          <Link 
+            to="/" 
+            className={`font-medium text-sm text-darkText hover:text-threadGold transition-colors py-1.5 border-b-2 ${
+              isActive('/') ? 'border-threadGold text-threadGold' : 'border-transparent'
+            }`}
+          >
             Home
           </Link>
           {categories.map((category) => (
             <Link
               key={category.id}
               to={`/category/${category.slug}`}
-              className="font-medium text-darkText hover:text-threadGold stitch-hover"
+              className={`font-medium text-sm text-darkText hover:text-threadGold transition-colors py-1.5 border-b-2 ${
+                isActive(`/category/${category.slug}`) ? 'border-threadGold text-threadGold' : 'border-transparent'
+              }`}
             >
               {category.name}
             </Link>
           ))}
-          <Link to="/contact" className="font-medium text-darkText hover:text-threadGold stitch-hover">
+          <Link 
+            to="/contact" 
+            className={`font-medium text-sm text-darkText hover:text-threadGold transition-colors py-1.5 border-b-2 ${
+              isActive('/contact') ? 'border-threadGold text-threadGold' : 'border-transparent'
+            }`}
+          >
             Contact
           </Link>
         </nav>
 
+        {/* User actions */}
+        <div className="flex items-center space-x-2">
+          {/* Wishlist - desktop only */}
+          <Link 
+            to="/wishlist" 
+            className="hidden md:flex items-center justify-center p-2 rounded-full hover:bg-gray-100/80 transition-colors"
+          >
+            <Heart className="h-[18px] w-[18px] text-darkText hover:text-threadGold transition-colors" />
+          </Link>
+          
+          {/* Account - desktop only */}
+          <Link 
+            to="/account" 
+            className="hidden md:flex items-center justify-center p-2 rounded-full hover:bg-gray-100/80 transition-colors"
+          >
+            <User className="h-[18px] w-[18px] text-darkText hover:text-threadGold transition-colors" />
+          </Link>
+
         {/* Cart Icon */}
-        <div className="flex items-center">
           <Link 
             to="/cart" 
-            className="relative p-2 ml-4"
+            className="relative flex items-center justify-center p-2 rounded-full hover:bg-gray-100/80 transition-colors"
           >
-            <ShoppingCart className="h-6 w-6 text-darkText hover:text-threadGold transition-colors" />
+            <ShoppingCart className="h-[18px] w-[18px] text-darkText hover:text-threadGold transition-colors" />
             {cartCount() > 0 && (
-              <span className="absolute -top-2 -right-2 bg-threadGold text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+              <span
+                className="absolute -top-1 -right-1 bg-threadGold text-white text-[10px] font-medium rounded-full h-4 w-4 flex items-center justify-center"
+                style={{ boxShadow: '0 0 0 2px white' }}
+              >
                 {cartCount()}
               </span>
             )}
@@ -137,8 +192,12 @@ const Header = () => {
           {/* Mobile Menu Trigger */}
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden ml-2">
-                <Menu className="h-6 w-6" />
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="md:hidden flex items-center justify-center p-2 rounded-full hover:bg-gray-100/80 transition-colors"
+              >
+                <Menu className="h-[18px] w-[18px] text-darkText" />
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
@@ -146,7 +205,9 @@ const Header = () => {
               <div className="flex flex-col space-y-4 mt-8">
                 <Link 
                   to="/" 
-                  className="font-medium text-lg text-darkText hover:text-threadGold"
+                  className={`font-medium text-base px-2 py-2 rounded ${
+                    isActive('/') ? 'bg-threadGold/10 text-threadGold' : 'text-darkText'
+                  }`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Home
@@ -155,7 +216,9 @@ const Header = () => {
                   <Link
                     key={category.id}
                     to={`/category/${category.slug}`}
-                    className="font-medium text-lg text-darkText hover:text-threadGold"
+                    className={`font-medium text-base px-2 py-2 rounded ${
+                      isActive(`/category/${category.slug}`) ? 'bg-threadGold/10 text-threadGold' : 'text-darkText'
+                    }`}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {category.name}
@@ -163,16 +226,40 @@ const Header = () => {
                 ))}
                 <Link 
                   to="/contact" 
-                  className="font-medium text-lg text-darkText hover:text-threadGold"
+                  className={`font-medium text-base px-2 py-2 rounded ${
+                    isActive('/contact') ? 'bg-threadGold/10 text-threadGold' : 'text-darkText'
+                  }`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Contact
                 </Link>
+                
+                <div className="border-t border-gray-100 my-2 pt-2"></div>
+                
                 <Link 
-                  to="/cart" 
-                  className="font-medium text-lg text-darkText hover:text-threadGold flex items-center"
+                  to="/wishlist" 
+                  className="font-medium text-base text-darkText hover:text-threadGold flex items-center gap-2 px-2 py-2"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
+                  <Heart className="h-5 w-5" />
+                  Wishlist
+                </Link>
+                
+                <Link 
+                  to="/account" 
+                  className="font-medium text-base text-darkText hover:text-threadGold flex items-center gap-2 px-2 py-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <User className="h-5 w-5" />
+                  Account
+                </Link>
+                
+                <Link 
+                  to="/cart" 
+                  className="font-medium text-base text-darkText hover:text-threadGold flex items-center gap-2 px-2 py-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <ShoppingCart className="h-5 w-5" />
                   Cart ({cartCount()})
                 </Link>
               </div>
@@ -183,12 +270,15 @@ const Header = () => {
                   <Input
                     type="search"
                     placeholder="Search products..."
-                    className="w-full pr-10"
+                    className="w-full pr-10 rounded-full py-1.5 border-gray-200"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
-                  <button type="submit" className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                    <Search className="h-4 w-4 text-gray-500" />
+                  <button 
+                    type="submit" 
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-threadGold transition-colors"
+                  >
+                    <Search className="h-4 w-4" />
                   </button>
                 </div>
               </form>

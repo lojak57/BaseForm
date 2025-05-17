@@ -1,7 +1,7 @@
 {
-  "name": "VC Sews - Handcrafted Artisan Bags",
-  "short_name": "VC Sews",
-  "description": "Discover handcrafted, artisanal bags made with premium fabrics in Boulder, Colorado.",
+  "name": "White-Label Webshop",
+  "short_name": "Webshop",
+  "description": "A fully customizable e-commerce template with multi-tenant support.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FDFCF7",
@@ -23,7 +23,7 @@
   ],
   "screenshots": [
     {
-      "src": "/lovable-uploads/463dd640-f9c6-4abf-aa5f-4e6927af1de5.png",
+      "src": "/images/screenshot.png",
       "type": "image/png",
       "sizes": "1080x1920",
       "form_factor": "narrow"
