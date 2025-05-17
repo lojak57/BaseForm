@@ -40,19 +40,19 @@ export const fontOptions = [
 
 // Store customization moods
 export const storeMoods = [
-  { id: "minimalist", name: "Minimalist", description: "Clean and simple design with focus on products", color: "#27272A", secondaryColor: "#71717A", accentColor: "#3B82F6", bgColor: "#FAFAFA", icon: "geometric" },
-  { id: "bold", name: "Bold", description: "Eye-catching colors and dynamic elements", color: "#DC2626", secondaryColor: "#FBBF24", accentColor: "#2563EB", bgColor: "#FFFFFF", icon: "dynamic" },
-  { id: "elegant", name: "Elegant", description: "Sophisticated design with refined typography", color: "#7E22CE", secondaryColor: "#E879F9", accentColor: "#F59E0B", bgColor: "#FAF5FF", icon: "luxury" },
-  { id: "playful", name: "Playful", description: "Fun and energetic design with creative elements", color: "#06B6D4", secondaryColor: "#F97316", accentColor: "#8B5CF6", bgColor: "#ECFEFF", icon: "creative" },
-  { id: "modern", name: "Modern", description: "Clean contemporary design with vibrant accents", color: "#10B981", secondaryColor: "#6366F1", accentColor: "#F43F5E", bgColor: "#F0FDF4", icon: "minimal" },
-  { id: "vintage", name: "Vintage", description: "Retro aesthetics with nostalgic elements", color: "#A16207", secondaryColor: "#D97706", accentColor: "#92400E", bgColor: "#FFFBEB", icon: "retro" },
+  { id: "minimalist", name: "Minimalist", description: "Clean and simple design with focus on products", color: "#0d3b66", secondaryColor: "#18a77e", accentColor: "#18a77e", bgColor: "#FAFAFA", icon: "geometric" },
+  { id: "bold", name: "Bold", description: "Eye-catching colors and dynamic elements", color: "#0d3b66", secondaryColor: "#18a77e", accentColor: "#18a77e", bgColor: "#FFFFFF", icon: "dynamic" },
+  { id: "elegant", name: "Elegant", description: "Sophisticated design with refined typography", color: "#0d3b66", secondaryColor: "#18a77e", accentColor: "#18a77e", bgColor: "#FAF5FF", icon: "luxury" },
+  { id: "playful", name: "Playful", description: "Fun and energetic design with creative elements", color: "#0d3b66", secondaryColor: "#18a77e", accentColor: "#18a77e", bgColor: "#ECFEFF", icon: "creative" },
+  { id: "modern", name: "Modern", description: "Clean contemporary design with vibrant accents", color: "#0d3b66", secondaryColor: "#18a77e", accentColor: "#18a77e", bgColor: "#F0FDF4", icon: "minimal" },
+  { id: "vintage", name: "Vintage", description: "Retro aesthetics with nostalgic elements", color: "#0d3b66", secondaryColor: "#18a77e", accentColor: "#18a77e", bgColor: "#FFFBEB", icon: "retro" },
 ];
 
 // Helpers for color selection
 export const getSliderPosition = (color: string) => {
   const colors = [
-    "#9333EA", "#A855F7", "#D946EF", "#EC4899", "#F43F5E", 
-    "#F59E0B", "#FBBF24", "#A16207"
+    "#0d3b66", "#1e5b93", "#2f81c1", "#18a77e", "#1fca99", 
+    "#38e2b3", "#6bebb9", "#9ef4d3"
   ];
   const index = colors.findIndex(c => c.toLowerCase() === color.toLowerCase());
   if (index === -1) return 50; // default to middle if color not found

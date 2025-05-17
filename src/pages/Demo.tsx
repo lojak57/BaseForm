@@ -120,12 +120,12 @@ const Demo = () => {
   // Customization states
   const [logoImage, setLogoImage] = useState("/placeholder-images/logo-placeholder.png");
   const [logoImageId, setLogoImageId] = useState<string | null>(null);
-  const [primaryColor, setPrimaryColor] = useState("#3B82F6");
-  const [tempPrimaryColor, setTempPrimaryColor] = useState("#3B82F6"); // For debounced color picker
-  const [secondaryColor, setSecondaryColor] = useState("#F59E0B");
-  const [tempSecondaryColor, setTempSecondaryColor] = useState("#F59E0B"); // For debounced color picker
-  const [accentColor, setAccentColor] = useState("#10B981");
-  const [tempAccentColor, setTempAccentColor] = useState("#10B981"); // For debounced color picker
+  const [primaryColor, setPrimaryColor] = useState("#0d3b66");
+  const [tempPrimaryColor, setTempPrimaryColor] = useState("#0d3b66"); // For debounced color picker
+  const [secondaryColor, setSecondaryColor] = useState("#18a77e");
+  const [tempSecondaryColor, setTempSecondaryColor] = useState("#18a77e"); // For debounced color picker
+  const [accentColor, setAccentColor] = useState("#18a77e");
+  const [tempAccentColor, setTempAccentColor] = useState("#18a77e"); // For debounced color picker
   const [selectedFont, setSelectedFont] = useState("Modern");
   const [selectedMood, setSelectedMood] = useState("Minimalist");
   const [layoutStyle, setLayoutStyle] = useState("Standard");
@@ -632,12 +632,12 @@ const Demo = () => {
 
   return (
     <Layout>
-      <div className="py-16 bg-gradient-to-r from-threadGold/5 to-threadGold/10">
+      <div className="py-16 bg-gradient-to-r from-[#0d3b66]/5 to-[#0d3b66]/10">
         <div className="container mx-auto px-4">
           <Reveal animation="fade-up">
             <div className="max-w-4xl mx-auto text-center">
               <h1 className="text-3xl md:text-4xl font-playfair font-bold mb-4">
-                See How White Label Webshop Works
+                See How BaseForm Works
               </h1>
               <p className="text-lg text-darkText/70 mb-8">
                 Follow this interactive demo to explore how easy it is to set up and manage your online store.
@@ -657,9 +657,9 @@ const Demo = () => {
                     onClick={() => setCurrentStep(step)}
                     className={`relative z-10 flex items-center justify-center w-12 h-12 rounded-full text-lg font-medium transition-all ${
                       step === currentStep
-                        ? "bg-threadGold text-white shadow-lg"
+                        ? "bg-[#18a77e] text-white shadow-lg"
                         : step < currentStep
-                        ? "bg-threadGold/80 text-white"
+                        ? "bg-[#18a77e]/80 text-white"
                         : "bg-white text-darkText border border-gray-200"
                     }`}
                   >
@@ -816,7 +816,7 @@ const Demo = () => {
                                 <div className="flex flex-col gap-2">
                                   <label 
                                     htmlFor="logo-upload" 
-                                    className="cursor-pointer px-4 py-2 bg-threadGold text-white rounded-md hover:bg-threadGold/90 flex items-center justify-center gap-2 text-sm"
+                                    className="cursor-pointer px-4 py-2 bg-[#0d3b66] text-white rounded-md hover:bg-[#0d3b66]/90 flex items-center justify-center gap-2 text-sm"
                                   >
                                     <Upload className="w-4 h-4" />
                                     Upload Logo
@@ -850,7 +850,7 @@ const Demo = () => {
                                         key={font.name}
                                         className={`border rounded-lg p-3 cursor-pointer transition-all ${
                                           selectedFont === font.name
-                                            ? 'border-threadGold bg-threadGold/5 ring-1 ring-threadGold'
+                                            ? 'border-[#18a77e] bg-[#18a77e]/5 ring-1 ring-[#18a77e]'
                                             : 'border-gray-200 hover:border-gray-300'
                                         }`}
                                         onClick={() => setSelectedFont(font.name)}
@@ -861,7 +861,7 @@ const Demo = () => {
                                             <p className="text-xs text-gray-500 mt-0.5">{font.description}</p>
                                           </div>
                                           {selectedFont === font.name && (
-                                            <Check className="text-threadGold w-4 h-4" />
+                                            <Check className="text-[#18a77e] w-4 h-4" />
                                           )}
                                         </div>
                                         <div 
@@ -933,7 +933,7 @@ const Demo = () => {
                                 ].map(color => (
                                   <button
                                     key={color}
-                                    className="w-10 h-10 rounded-lg border border-gray-200 transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-threadGold"
+                                    className="w-10 h-10 rounded-lg border border-gray-200 transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-[#18a77e]"
                                     style={{ backgroundColor: color }}
                                     onClick={() => setSecondaryColor(color)}
                                     aria-label={`Select color ${color}`}
@@ -1059,7 +1059,7 @@ const Demo = () => {
                                 key={mood.id}
                                 className={`border rounded-lg p-4 cursor-pointer transition-all ${
                                   selectedMood === mood.name
-                                    ? 'border-threadGold bg-threadGold/5 ring-1 ring-threadGold'
+                                    ? 'border-[#18a77e] bg-[#18a77e]/5 ring-1 ring-[#18a77e]'
                                     : 'border-gray-200 hover:border-gray-300'
                                 }`}
                                 onClick={() => setSelectedMood(mood.name)}
@@ -1076,7 +1076,7 @@ const Demo = () => {
                                     </div>
                                   </div>
                                   {selectedMood === mood.name && (
-                                    <Check className="text-threadGold w-5 h-5" />
+                                    <Check className="text-[#18a77e] w-5 h-5" />
                                   )}
                                 </div>
                                 
@@ -1310,9 +1310,9 @@ const Demo = () => {
                                   key={step}
                                   className={`relative z-10 flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium transition-all ${
                                     step === checkoutState.step
-                                      ? "bg-primary text-white shadow-lg"
+                                      ? "bg-[#18a77e] text-white shadow-lg"
                                       : step < checkoutState.step
-                                      ? "bg-primary/80 text-white"
+                                      ? "bg-[#18a77e]/80 text-white"
                                       : "bg-white text-gray-400 border border-gray-200"
                                   }`}
                                   style={{ 
@@ -1434,7 +1434,7 @@ const Demo = () => {
                                   <div 
                                     className={`border rounded-lg p-3 flex gap-3 items-center cursor-pointer transition-colors ${
                                       checkoutState.paymentMethod === 'credit-card' 
-                                        ? 'border-primary bg-primary/5' 
+                                        ? 'border-[#18a77e] bg-[#18a77e]/5' 
                                         : 'border-gray-200 hover:border-gray-300'
                                     }`}
                                     style={{ borderColor: checkoutState.paymentMethod === 'credit-card' ? primaryColor : undefined }}
@@ -1459,7 +1459,7 @@ const Demo = () => {
                                   <div 
                                     className={`border rounded-lg p-3 flex gap-3 items-center cursor-pointer transition-colors ${
                                       checkoutState.paymentMethod === 'paypal' 
-                                        ? 'border-primary bg-primary/5' 
+                                        ? 'border-[#18a77e] bg-[#18a77e]/5' 
                                         : 'border-gray-200 hover:border-gray-300'
                                     }`}
                                     style={{ borderColor: checkoutState.paymentMethod === 'paypal' ? primaryColor : undefined }}
@@ -1479,7 +1479,7 @@ const Demo = () => {
                                   <div 
                                     className={`border rounded-lg p-3 flex gap-3 items-center cursor-pointer transition-colors ${
                                       checkoutState.paymentMethod === 'apple-pay' 
-                                        ? 'border-primary bg-primary/5' 
+                                        ? 'border-[#18a77e] bg-[#18a77e]/5' 
                                         : 'border-gray-200 hover:border-gray-300'
                                     }`}
                                     style={{ borderColor: checkoutState.paymentMethod === 'apple-pay' ? primaryColor : undefined }}
@@ -1499,7 +1499,7 @@ const Demo = () => {
                                   <div 
                                     className={`border rounded-lg p-3 flex gap-3 items-center cursor-pointer transition-colors ${
                                       checkoutState.paymentMethod === 'crypto' 
-                                        ? 'border-primary bg-primary/5' 
+                                        ? 'border-[#18a77e] bg-[#18a77e]/5' 
                                         : 'border-gray-200 hover:border-gray-300'
                                     }`}
                                     style={{ borderColor: checkoutState.paymentMethod === 'crypto' ? primaryColor : undefined }}
@@ -1709,7 +1709,7 @@ const Demo = () => {
                             <div 
                               className={`border rounded-lg overflow-hidden cursor-pointer transition-all ${
                                 layoutStyle === 'Standard'
-                                  ? 'border-threadGold bg-threadGold/5 ring-1 ring-threadGold'
+                                  ? 'border-[#18a77e] bg-[#18a77e]/5 ring-1 ring-[#18a77e]'
                                   : 'border-gray-200 hover:border-gray-300'
                               }`}
                               onClick={() => setLayoutStyle('Standard')}
@@ -1732,7 +1732,7 @@ const Demo = () => {
                             <div 
                               className={`border rounded-lg overflow-hidden cursor-pointer transition-all ${
                                 layoutStyle === 'Compact'
-                                  ? 'border-threadGold bg-threadGold/5 ring-1 ring-threadGold'
+                                  ? 'border-[#18a77e] bg-[#18a77e]/5 ring-1 ring-[#18a77e]'
                                   : 'border-gray-200 hover:border-gray-300'
                               }`}
                               onClick={() => setLayoutStyle('Compact')}
@@ -1757,7 +1757,7 @@ const Demo = () => {
                             <div 
                               className={`border rounded-lg overflow-hidden cursor-pointer transition-all ${
                                 layoutStyle === 'Spacious'
-                                  ? 'border-threadGold bg-threadGold/5 ring-1 ring-threadGold'
+                                  ? 'border-[#18a77e] bg-[#18a77e]/5 ring-1 ring-[#18a77e]'
                                   : 'border-gray-200 hover:border-gray-300'
                               }`}
                               onClick={() => setLayoutStyle('Spacious')}
@@ -1780,7 +1780,7 @@ const Demo = () => {
                             <h3 className="font-medium mb-3">Premium Layouts</h3>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                               <div className="border border-gray-200 rounded-lg overflow-hidden bg-gray-50 relative">
-                                <div className="absolute top-3 right-3 bg-threadGold/90 text-white text-xs px-2 py-1 rounded-md">
+                                <div className="absolute top-3 right-3 bg-[#0d3b66]/90 text-white text-xs px-2 py-1 rounded-md">
                                   Premium
                                 </div>
                                 <div className="p-4 aspect-video flex flex-col">
@@ -1802,7 +1802,7 @@ const Demo = () => {
                               </div>
                               
                               <div className="border border-gray-200 rounded-lg overflow-hidden bg-gray-50 relative">
-                                <div className="absolute top-3 right-3 bg-threadGold/90 text-white text-xs px-2 py-1 rounded-md">
+                                <div className="absolute top-3 right-3 bg-[#0d3b66]/90 text-white text-xs px-2 py-1 rounded-md">
                                   Premium
                                 </div>
                                 <div className="p-4 aspect-video">
@@ -1857,7 +1857,7 @@ const Demo = () => {
                               <Button 
                                 variant="default" 
                                 onClick={() => setShowCategoryDialog(true)}
-                                className="text-sm bg-threadGold hover:bg-threadGold/90"
+                                className="text-sm bg-[#18a77e] hover:bg-[#18a77e]/90"
                               >
                                 <Plus className="w-4 h-4 mr-1" /> Create Category
                               </Button>
@@ -1893,7 +1893,7 @@ const Demo = () => {
                               
                               <div className="mt-4 flex justify-end">
                                 <Button 
-                                  className="bg-threadGold hover:bg-threadGold/90"
+                                  className="bg-[#18a77e] hover:bg-[#18a77e]/90"
                                   onClick={() => setCategorySelectionComplete(true)}
                                 >
                                   <Check className="w-4 h-4 mr-2" />
@@ -1912,7 +1912,7 @@ const Demo = () => {
                               </p>
                               <Button 
                                 onClick={() => setShowCategoryDialog(true)}
-                                className="bg-threadGold hover:bg-threadGold/90"
+                                className="bg-[#18a77e] hover:bg-[#18a77e]/90"
                               >
                                 <Plus className="w-4 h-4 mr-2" />
                                 Create Category
@@ -1980,7 +1980,7 @@ const Demo = () => {
                                   <div className="p-3">
                                     <h4 className="font-medium truncate">{product.name}</h4>
                                     <div className="flex items-baseline gap-2 mt-1">
-                                      <span className="text-threadGold font-semibold">${product.price}</span>
+                                      <span className="text-[#18a77e] font-semibold">${product.price}</span>
                                       {product.comparePrice && (
                                         <span className="text-gray-400 line-through text-sm">${product.comparePrice}</span>
                                       )}
@@ -2000,8 +2000,8 @@ const Demo = () => {
                                     setEditingProduct(null);
                                   }}
                                 >
-                                  <div className="w-12 h-12 rounded-full bg-threadGold/10 flex items-center justify-center mb-2">
-                                    <Plus className="w-6 h-6 text-threadGold" />
+                                  <div className="w-12 h-12 rounded-full bg-[#18a77e]/10 flex items-center justify-center mb-2">
+                                    <Plus className="w-6 h-6 text-[#18a77e]" />
                                   </div>
                                   <p className="text-sm text-center text-gray-600">Add Product</p>
                                   <p className="text-xs text-center text-gray-400 mt-1">({3 - products.length} remaining)</p>
@@ -2085,7 +2085,7 @@ const Demo = () => {
                                     <div className="absolute inset-0 bg-black/30 flex flex-col items-center justify-center text-white">
                                       <div className="w-3/4 h-2 bg-gray-200 rounded-full overflow-hidden">
                                         <div 
-                                          className="h-full bg-threadGold" 
+                                          className="h-full bg-[#18a77e]" 
                                           style={{ width: `${uploadProgress}%` }}
                                         ></div>
                                       </div>
@@ -2099,7 +2099,7 @@ const Demo = () => {
                                 <div className="flex gap-2">
                                   <label 
                                     htmlFor="product-image-upload" 
-                                    className="cursor-pointer px-4 py-2 bg-threadGold text-white rounded-md hover:bg-threadGold/90 flex items-center justify-center gap-2 text-sm"
+                                    className="cursor-pointer px-4 py-2 bg-[#18a77e] text-white rounded-md hover:bg-[#18a77e]/90 flex items-center justify-center gap-2 text-sm"
                                   >
                                     <Upload className="w-4 h-4" />
                                     Upload Image
@@ -2230,7 +2230,7 @@ const Demo = () => {
                                         <span className="text-sm font-medium">Basic Plan</span>
                                         <p className="text-xs text-gray-500">Standard rate</p>
                                       </div>
-                                      <span className="text-sm font-bold text-threadGold">3.9% + $0.30</span>
+                                      <span className="text-sm font-bold text-[#18a77e]">3.9% + $0.30</span>
                                     </div>
                                     <div className="flex items-center justify-between p-2 bg-white rounded border border-blue-100">
                                       <div>
@@ -2262,7 +2262,7 @@ const Demo = () => {
                                 Cancel
                               </Button>
                               <Button 
-                                className="bg-blue-600 hover:bg-blue-700"
+                                className="bg-[#18a77e] hover:bg-[#18a77e]/90"
                                 onClick={saveProduct}
                               >
                                 <Save className="w-4 h-4 mr-2" />
@@ -2271,7 +2271,7 @@ const Demo = () => {
                             </>
                           ) : (
                             <Button 
-                              className="bg-green-600 hover:bg-green-700"
+                              className="bg-[#18a77e] hover:bg-[#18a77e]/90"
                               onClick={saveProduct}
                               disabled={products.length >= 3}
                             >
@@ -2316,7 +2316,7 @@ const Demo = () => {
                                 key={product.id}
                                 className={`border rounded-lg overflow-hidden cursor-pointer transition-all ${
                                   editingProduct?.id === product.id 
-                                    ? 'border-threadGold ring-1 ring-threadGold' 
+                                    ? 'border-[#18a77e] ring-1 ring-[#18a77e]' 
                                     : 'border-gray-200 hover:border-gray-300'
                                 }`}
                                 onClick={() => editProduct(product)}
@@ -2346,7 +2346,7 @@ const Demo = () => {
                                 <h3 className="font-medium">Size Options for {editingProduct.name}</h3>
                                 <div className="flex gap-2">
                                   <button 
-                                    className="text-threadGold text-sm flex items-center gap-1"
+                                    className="text-[#18a77e] text-sm flex items-center gap-1"
                                     onClick={addSize}
                                   >
                                     <Plus className="w-3.5 h-3.5" /> Add Size
@@ -2380,7 +2380,7 @@ const Demo = () => {
                                 <h3 className="font-medium">Color Options for {editingProduct.name}</h3>
                                 <div className="flex gap-2">
                                   <button 
-                                    className="text-threadGold text-sm flex items-center gap-1"
+                                    className="text-[#18a77e] text-sm flex items-center gap-1"
                                     onClick={addColor}
                                   >
                                     <Plus className="w-3.5 h-3.5" /> Add Color
@@ -2415,7 +2415,7 @@ const Demo = () => {
                             
                             <div className="mt-6 flex justify-end">
                               <Button 
-                                className="bg-green-600 hover:bg-green-700"
+                                className="bg-[#18a77e] hover:bg-[#18a77e]/90"
                                 onClick={() => {
                                   // Update product with new options
                                   setProducts(products.map(p => 
@@ -2441,30 +2441,30 @@ const Demo = () => {
                         <div className="border border-gray-200 rounded-lg p-5 bg-gradient-to-r from-purple-50 to-pink-50">
                           <div className="flex gap-3">
                             <div>
-                              <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mb-1">
-                                <Sparkles className="w-5 h-5 text-purple-600" />
+                              <div className="w-10 h-10 bg-[#18a77e] rounded-full flex items-center justify-center mb-1">
+                                <Sparkles className="w-5 h-5 text-[#18a77e]" />
                               </div>
                             </div>
                             <div>
-                              <h3 className="text-sm font-medium text-purple-800 mb-1">Premium Plan Features</h3>
-                              <p className="text-xs text-purple-700 mb-3">
+                              <h3 className="text-sm font-medium text-[#18a77e] mb-1">Premium Plan Features</h3>
+                              <p className="text-xs text-[#18a77e] mb-3">
                                 Upgrade to Premium for advanced product options.
                               </p>
                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                 <div className="flex items-start gap-2">
-                                  <Check className="w-4 h-4 text-purple-600 mt-0.5" />
+                                  <Check className="w-4 h-4 text-[#18a77e] mt-0.5" />
                                   <span className="text-xs">Conditional options that appear based on other selections</span>
                                 </div>
                                 <div className="flex items-start gap-2">
-                                  <Check className="w-4 h-4 text-purple-600 mt-0.5" />
+                                  <Check className="w-4 h-4 text-[#18a77e] mt-0.5" />
                                   <span className="text-xs">Price adjustments based on selected options</span>
                                 </div>
                                 <div className="flex items-start gap-2">
-                                  <Check className="w-4 h-4 text-purple-600 mt-0.5" />
+                                  <Check className="w-4 h-4 text-[#18a77e] mt-0.5" />
                                   <span className="text-xs">Inventory tracking per option combination</span>
                                 </div>
                                 <div className="flex items-start gap-2">
-                                  <Check className="w-4 h-4 text-purple-600 mt-0.5" />
+                                  <Check className="w-4 h-4 text-[#18a77e] mt-0.5" />
                                   <span className="text-xs">Option-specific images</span>
                                 </div>
                               </div>
@@ -2556,7 +2556,7 @@ const Demo = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                       <div className="border border-gray-200 rounded-lg p-4">
                         <h3 className="font-medium mb-2 flex items-center">
-                          <span className="w-6 h-6 bg-threadGold text-white rounded-full inline-flex items-center justify-center text-xs mr-2">1</span>
+                          <span className="w-6 h-6 bg-[#18a77e] text-white rounded-full inline-flex items-center justify-center text-xs mr-2">1</span>
                           Selected Plan
                         </h3>
                         <div className="bg-gray-50 p-3 rounded-lg">
@@ -2585,7 +2585,7 @@ const Demo = () => {
                       
                       <div className="border border-gray-200 rounded-lg p-4">
                         <h3 className="font-medium mb-2 flex items-center">
-                          <span className="w-6 h-6 bg-threadGold text-white rounded-full inline-flex items-center justify-center text-xs mr-2">2</span>
+                          <span className="w-6 h-6 bg-[#18a77e] text-white rounded-full inline-flex items-center justify-center text-xs mr-2">2</span>
                           Your Domain
                         </h3>
                         <div className="space-y-3">
@@ -2593,7 +2593,7 @@ const Demo = () => {
                             <span className="text-sm">{storeUrl}.webshop.com</span>
                             <span className="ml-2 px-2 py-0.5 text-xs bg-green-100 text-green-800 rounded">Included free</span>
                           </div>
-                          <div className="border border-dashed border-threadGold rounded-lg p-3 bg-threadGold/5">
+                          <div className="border border-dashed border-[#18a77e] rounded-lg p-3 bg-[#18a77e]/5">
                             <div className="flex justify-between items-center">
                               <div>
                                 <h4 className="font-medium text-sm">Use your own domain</h4>
@@ -2616,7 +2616,7 @@ const Demo = () => {
                       </p>
                       <div className="flex flex-col sm:flex-row gap-3 justify-center">
                         <Button 
-                          className="bg-green-600 hover:bg-green-700"
+                          className="bg-[#18a77e] hover:bg-[#18a77e]/90"
                           onClick={() => setShowConversionDialog(true)}
                         >
                           Publish Store
@@ -2666,7 +2666,7 @@ const Demo = () => {
                         Preview Store
                       </Button>
                       <Button 
-                        className="bg-threadGold hover:bg-threadGold/90"
+                        className="bg-[#18a77e] hover:bg-[#18a77e]/90"
                         onClick={() => setShowConversionDialog(true)}
                       >
                         Launch Your Store
@@ -2798,7 +2798,7 @@ const Demo = () => {
                         <nav className="hidden md:flex items-center space-x-6">
                           <a 
                             href="#" 
-                            className="font-medium py-2 border-b-2 border-threadGold"
+                            className="font-medium py-2 border-b-2 border-[#18a77e]"
                             style={{ color: primaryColor, borderColor: primaryColor }}
                           >
                             Home
@@ -2807,7 +2807,7 @@ const Demo = () => {
                             <a 
                               key={cat.id}
                               href="#" 
-                              className="font-medium text-gray-600 py-2 border-b-2 border-transparent hover:text-threadGold hover:border-threadGold transition-colors relative group"
+                              className="font-medium text-gray-600 py-2 border-b-2 border-transparent hover:text-[#18a77e] hover:border-[#18a77e] transition-colors relative group"
                               style={{ 
                                 "--hover-color": primaryColor 
                               } as React.CSSProperties}
@@ -3294,7 +3294,7 @@ const Demo = () => {
                               {/* Elegant mood elements */}
                               {selectedMood === 'Elegant' && (
                                 <div className="flex flex-col items-center text-center">
-                                  <div className="w-16 h-1 bg-threadGold mb-6"></div>
+                                  <div className="w-16 h-1 bg-[#18a77e] mb-6"></div>
                                   <h2 
                                     className="text-2xl sm:text-3xl font-medium mb-3"
                                     style={{ 
@@ -3317,7 +3317,7 @@ const Demo = () => {
                                   >
                                     Discover
                                   </button>
-                                  <div className="w-16 h-1 bg-threadGold mt-6"></div>
+                                  <div className="w-16 h-1 bg-[#18a77e] mt-6"></div>
                                 </div>
                               )}
                               
@@ -3684,7 +3684,7 @@ const Demo = () => {
                                 <ul className="space-y-2 text-sm">
                                   {categories.map(cat => (
                                     <li key={cat.id}>
-                                      <a href="#" className="text-gray-500 hover:text-threadGold inline-block relative group">
+                                      <a href="#" className="text-gray-500 hover:text-[#18a77e] inline-block relative group">
                                         <span className="relative z-10">{cat.name}</span>
                                         <span className="absolute inset-0 transform -skew-x-12 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" style={{ backgroundColor: `${accentColor}10` }}></span>
                                       </a>
@@ -3692,11 +3692,11 @@ const Demo = () => {
                                   ))}
                                   {categories.length === 0 && (
                                     <>
-                                      <li><a href="#" className="text-gray-500 hover:text-threadGold inline-block relative group">
+                                      <li><a href="#" className="text-gray-500 hover:text-[#18a77e] inline-block relative group">
                                         <span className="relative z-10">All Products</span>
                                         <span className="absolute inset-0 transform -skew-x-12 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" style={{ backgroundColor: `${accentColor}10` }}></span>
                                       </a></li>
-                                      <li><a href="#" className="text-gray-500 hover:text-threadGold inline-block relative group">
+                                      <li><a href="#" className="text-gray-500 hover:text-[#18a77e] inline-block relative group">
                                         <span className="relative z-10">Featured</span>
                                         <span className="absolute inset-0 transform -skew-x-12 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" style={{ backgroundColor: `${accentColor}10` }}></span>
                                       </a></li>
@@ -3712,15 +3712,15 @@ const Demo = () => {
                                   </span>
                                 </h4>
                                 <ul className="space-y-2 text-sm">
-                                  <li><a href="#" className="text-gray-500 hover:text-threadGold inline-block relative group">
+                                  <li><a href="#" className="text-gray-500 hover:text-[#18a77e] inline-block relative group">
                                     <span className="relative z-10">About Us</span>
                                     <span className="absolute inset-0 transform -skew-x-12 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" style={{ backgroundColor: `${secondaryColor}10` }}></span>
                                   </a></li>
-                                  <li><a href="#" className="text-gray-500 hover:text-threadGold inline-block relative group">
+                                  <li><a href="#" className="text-gray-500 hover:text-[#18a77e] inline-block relative group">
                                     <span className="relative z-10">Contact</span>
                                     <span className="absolute inset-0 transform -skew-x-12 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" style={{ backgroundColor: `${secondaryColor}10` }}></span>
                                   </a></li>
-                                  <li><a href="#" className="text-gray-500 hover:text-threadGold inline-block relative group">
+                                  <li><a href="#" className="text-gray-500 hover:text-[#18a77e] inline-block relative group">
                                     <span className="relative z-10">Blog</span>
                                     <span className="absolute inset-0 transform -skew-x-12 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" style={{ backgroundColor: `${secondaryColor}10` }}></span>
                                   </a></li>
@@ -3764,9 +3764,9 @@ const Demo = () => {
                                 <p>© 2023 {storeName}. All rights reserved.</p>
                               </div>
                               <div className="flex gap-4">
-                                <a href="#" className="hover:text-threadGold transition-colors">Privacy</a>
-                                <a href="#" className="hover:text-threadGold transition-colors">Terms</a>
-                                <a href="#" className="hover:text-threadGold transition-colors">Sitemap</a>
+                                <a href="#" className="hover:text-[#18a77e] transition-colors">Privacy</a>
+                                <a href="#" className="hover:text-[#18a77e] transition-colors">Terms</a>
+                                <a href="#" className="hover:text-[#18a77e] transition-colors">Sitemap</a>
                               </div>
                             </div>
                           </footer>
