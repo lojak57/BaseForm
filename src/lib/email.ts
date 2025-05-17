@@ -7,6 +7,9 @@ export const SHOP_PHONE = '(303) 870-7873';
 // Supabase URL for Edge Function
 const SUPABASE_URL = 'https://mpltvzpsgijpjcdacicp.supabase.co';
 
+// Supabase anon key - this is public, so it's okay to include it here
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1wbHR2enBzZ2lqcGpjZGFjaWNwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY3MTkzMDcsImV4cCI6MjA2MjI5NTMwN30.x3TPJhG33AJz5y621daKZi98oJMOEJ0oVVAuXNyQvaQ';
+
 // Types
 export interface OrderEmailData {
   orderNumber: string;
@@ -77,15 +80,13 @@ ${data.message}
   };
 
   try {
-    // Get the anonymous key from supabase client
-    const { data: { session } } = await supabase.auth.getSession();
-    const anon_key = session ? session.access_token : '';
-    
+    // Use the hardcoded anon key directly instead of relying on the session
+    // This ensures we always have a valid token for the Edge Function call
     const response = await fetch(`${SUPABASE_URL}/functions/v1/send-emails`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${anon_key}`
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
       },
       body: JSON.stringify(emailData)
     });
@@ -274,10 +275,7 @@ ${data.orderNotes ? `Order Notes:\n${data.orderNotes}\n\n` : ''}Please process t
 `;
 
   try {
-    // Get the anonymous key from supabase client
-    const { data: { session } } = await supabase.auth.getSession();
-    const anon_key = session ? session.access_token : '';
-    
+    // Using the hardcoded anon key for authentication
     // Prepare data for customer email
     const customerEmailData = {
       emailType: 'orders',  // This will use orders@vcsews.com as the from address
@@ -294,7 +292,7 @@ ${data.orderNotes ? `Order Notes:\n${data.orderNotes}\n\n` : ''}Please process t
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${anon_key}`
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
       },
       body: JSON.stringify(customerEmailData)
     });
@@ -323,7 +321,7 @@ ${data.orderNotes ? `Order Notes:\n${data.orderNotes}\n\n` : ''}Please process t
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${anon_key}`
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
       },
       body: JSON.stringify(ownerEmailData)
     });
