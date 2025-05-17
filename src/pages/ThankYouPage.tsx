@@ -47,13 +47,32 @@ export default function ThankYouPage() {
       console.log("Starting to send order confirmation emails");
       setEmailStatus("Sending order confirmation...");
       
-      // First, check if we have cart items available
+      // First check if we can get customer information from the database
+      // Try to get order data from the purchase record
+      const { data: orderRecord, error: orderError } = await supabase
+        .from('purchase_records')
+        .select('metadata')
+        .eq('session_id', sessionId)
+        .single();
+        
+      // Extract customer info from order record if available
+      let stripeCustomerData = null;
+      if (orderRecord?.metadata?.customer) {
+        stripeCustomerData = orderRecord.metadata.customer;
+        console.log("Found customer data in Stripe metadata:", stripeCustomerData);
+      }
+      
+      // Next, check if we have cart items available
       const hasCartItems = cart && cart.length > 0;
       console.log(`Cart check: ${hasCartItems ? 'Cart has items' : 'Cart is empty'}`, cart);
       
-      // Try to get customer data from localStorage
-      const customerData = getCustomerData();
-      console.log("Customer data retrieved from localStorage:", customerData);
+      // Try to get customer data from localStorage as backup
+      const localStorageData = getCustomerData();
+      console.log("Customer data retrieved from localStorage:", localStorageData);
+      
+      // Combine data sources with priority to Stripe data
+      const customerData = stripeCustomerData || localStorageData;
+      console.log("Final customer data for email:", customerData);
       
       // Generate an order number
       const orderNumber = generateOrderNumber();
@@ -86,10 +105,19 @@ export default function ThankYouPage() {
       const shipping = 0; // Free shipping
       const total = subtotal;
       
-      // Extract customer info from localStorage data, with fallbacks
+      // Extract customer info from combined data sources, with fallbacks
+      // If the customer checkout through Stripe with an email, use that as primary
+      const { data: sessionData, error: sessionError } = await supabase.functions.invoke('stripe-get-session', {
+        body: { sessionId }
+      });
+      
+      const stripeEmail = sessionData?.customer_email || '';
+      console.log("Email from Stripe session:", stripeEmail);
+      
+      // Use the best available customer information with priority
       const {
         customerName = 'Customer',
-        customerEmail = '',
+        customerEmail = stripeEmail || '',  // Prioritize email from Stripe session
         customerPhone = '',
         streetAddress = '',
         apartment = '',
