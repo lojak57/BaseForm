@@ -317,7 +317,10 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex justify-between mb-2">
                   <span className="text-darkGray">Shipping</span>
-                  <span className="font-medium">Free</span>
+                  <span className="font-medium">Details provided upon receipt</span>
+                </div>
+                <div className="text-sm text-darkGray/80 italic ml-2 mb-2">
+                  <span>Currently offering local handoffs. Shipping arrangements will be communicated by owner after order placement.</span>
                 </div>
                 <div className="flex justify-between text-lg mt-4 pt-4 border-t">
                   <span className="font-medium">Total</span>

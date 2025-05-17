@@ -51,7 +51,10 @@ const CartPage = () => {
                     </div>
                     <div className="flex justify-between mb-2">
                       <span>Shipping</span>
-                      <span className="text-darkGray">Calculated at checkout</span>
+                      <span className="text-darkGray">Details at checkout</span>
+                    </div>
+                    <div className="text-xs text-darkGray/80 italic mb-2">
+                      Currently offering local handoffs. Shipping options will be communicated after purchase.
                     </div>
                   </div>
                   <div className="border-t border-gray-100 py-4">
