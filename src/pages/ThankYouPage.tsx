@@ -180,7 +180,7 @@ export default function ThankYouPage() {
                 country
               },
               order_notes: orderNotes,
-              items: orderItems.map(item => ({
+              order_items: orderItems.map(item => ({
                 name: item.name,
                 price: item.price,
                 quantity: item.quantity,
