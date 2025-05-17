@@ -16,3 +16,19 @@ export function formatCurrency(amount: number): string {
     maximumFractionDigits: 2
   }).format(amount);
 }
+
+/**
+ * Convert a string to a URL-friendly slug
+ */
+export function slugify(text: string): string {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')        // Replace spaces with -
+    .replace(/&/g, '-and-')       // Replace & with 'and'
+    .replace(/[^\w\-]+/g, '')    // Remove all non-word characters except dashes
+    .replace(/\-\-+/g, '-')       // Replace multiple - with single -
+    .replace(/^-+/, '')           // Trim - from start of text
+    .replace(/-+$/, '');          // Trim - from end of text
+}

@@ -2,7 +2,7 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Cog, Home, Package, PlusCircle, Info } from "lucide-react";
+import { Cog, Home, Package, PlusCircle, Info, Scissors, BookOpen } from "lucide-react";
 
 export default function DashboardPage() {
   const { logout } = useAuth();
@@ -44,9 +44,18 @@ export default function DashboardPage() {
               <PlusCircle className="h-4 w-4 mr-3 text-threadGold" />
               <span className="text-threadGold font-medium">Add New Product</span>
             </Link>
+            <Link to="/admin/fabrics" className="flex items-center py-2 px-4 hover:bg-gray-100 rounded">
+              <Scissors className="h-4 w-4 mr-3 text-gray-500" />
+              <span>Fabric Library</span>
+            </Link>
             <Link to="/admin/settings" className="flex items-center py-2 px-4 hover:bg-gray-100 rounded">
               <Cog className="h-4 w-4 mr-3 text-gray-500" />
               <span>Store Settings</span>
+            </Link>
+            
+            <Link to="/admin/guide" className="flex items-center py-2 px-4 hover:bg-gray-100 rounded">
+              <BookOpen className="h-4 w-4 mr-3 text-gray-500" />
+              <span>Admin Guide</span>
             </Link>
             
             <Separator className="my-4" />

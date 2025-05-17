@@ -166,5 +166,23 @@
   .stitched-border-hover {
     @apply border-[3px] border-dashed border-threadGold/0 hover:border-threadGold/50 transition-all duration-300;
   }
+  
+  /* Fabric zoom hover effect */
+  .fabric-swatch-container {
+    @apply relative;
+  }
+
+  .fabric-swatch-container:hover .fabric-zoom-preview {
+    @apply opacity-100;
+    transform: translate(-50%, -105%);
+    width: 300px;
+    height: 300px;
+  }
+
+  .fabric-zoom-preview {
+    @apply absolute w-0 h-0 top-0 left-1/2 opacity-0 transition-all duration-300 bg-white rounded-lg shadow-xl border-2 border-gray-100;
+    transform: translate(-50%, -100%);
+    z-index: 50;
+  }
 }
 

@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { toast } from "@/components/ui/sonner";
+import { sendContactFormEmail, ContactFormData, SHOP_PHONE } from "@/lib/email";
 
 interface SplitFormProps {
   title: string;
@@ -23,21 +24,38 @@ const SplitForm = ({ title, subtitle, image, altText }: SplitFormProps) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      // Create contact form data object
+      const contactData: ContactFormData = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        message: formData.message
+      };
+      
+      // Send email using the email service
+      await sendContactFormEmail(contactData);
+      
+      // Show success message
       toast.success("Message sent successfully!");
+      
+      // Reset form
       setFormData({
         name: "",
         email: "",
         phone: "",
         message: "",
       });
+    } catch (error) {
+      console.error('Failed to send contact form:', error);
+      toast.error("Failed to send message. Please try again later.");
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -56,6 +74,7 @@ const SplitForm = ({ title, subtitle, image, altText }: SplitFormProps) => {
           <div>
             <h2 className="font-playfair text-3xl md:text-4xl mb-3">{title}</h2>
             {subtitle && <p className="text-darkGray mb-8">{subtitle}</p>}
+            <p className="text-darkGray mb-8">Contact us by phone: <strong>{SHOP_PHONE}</strong></p>
             
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>

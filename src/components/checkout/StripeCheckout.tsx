@@ -128,6 +128,21 @@ const StripeCheckout = ({
         throw new Error("No checkout URL returned");
       }
 
+      // Store customer data for email use after payment
+      const customerData = {
+        customerName,
+        customerEmail,
+        customerPhone,
+        streetAddress: customerAddress.street,
+        apartment: customerAddress.apartment,
+        city: customerAddress.city,
+        state: customerAddress.state,
+        zipCode: customerAddress.zipCode,
+        country: customerAddress.country,
+        orderNotes
+      };
+      localStorage.setItem('checkout-customer-data', JSON.stringify(customerData));
+
       // Redirect to Stripe checkout
       window.location.href = data.url;
       

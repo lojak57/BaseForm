@@ -9,6 +9,7 @@ import { CartProvider } from "@/context/CartContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { ProductManagementProvider } from "@/context/ProductManagementContext";
 import { ProductProvider } from "@/context/ProductContext";
+import { FabricProvider } from "@/context/FabricContext";
 import { ProtectedRoute } from "./components/admin/ProtectedRoute";
 
 // Pages
@@ -24,12 +25,17 @@ import SearchPage from "./pages/SearchPage";
 
 // Admin Pages
 import LoginPage from "./pages/admin/LoginPage";
+import ResetPasswordPage from "./pages/admin/ResetPasswordPage";
+import UpdatePasswordPage from "./pages/admin/UpdatePasswordPage";
 import DashboardPage from "./pages/admin/DashboardPage";
 import DashboardHome from "./pages/admin/DashboardHome";
 import ProductsPage from "./pages/admin/ProductsPage";
 import ProductWizard from "./pages/admin/ProductWizard";
+import FabricsPage from "./pages/admin/FabricsPage";
+import FabricEditor from "./pages/admin/FabricEditor";
 import DiagnosticsPage from "./pages/admin/DiagnosticsPage";
 import SettingsPage from "./pages/admin/SettingsPage";
+import AdminGuidePage from "./pages/admin/AdminGuidePage";
 
 const queryClient = new QueryClient();
 
@@ -39,7 +45,8 @@ const App = () => (
       <AuthProvider>
         <ProductManagementProvider>
           <ProductProvider>
-            <CartProvider>
+            <FabricProvider>
+              <CartProvider>
               <Toaster />
               <Sonner />
               <BrowserRouter>
@@ -57,6 +64,8 @@ const App = () => (
                   
                   {/* Admin routes */}
                   <Route path="/admin/login" element={<LoginPage />} />
+                  <Route path="/admin/reset-password" element={<ResetPasswordPage />} />
+                  <Route path="/admin/update-password" element={<UpdatePasswordPage />} />
                   <Route path="/admin" element={
                     <ProtectedRoute>
                       <DashboardPage />
@@ -67,7 +76,11 @@ const App = () => (
                     <Route path="products" element={<ProductsPage />} />
                     <Route path="products/new" element={<ProductWizard />} />
                     <Route path="products/edit/:productId" element={<ProductWizard />} />
+                    <Route path="fabrics" element={<FabricsPage />} />
+                    <Route path="fabrics/new" element={<FabricEditor />} />
+                    <Route path="fabrics/edit/:fabricId" element={<FabricEditor />} />
                     <Route path="settings" element={<SettingsPage />} />
+                    <Route path="guide" element={<AdminGuidePage />} />
                     <Route path="diagnostics" element={<DiagnosticsPage />} />
                   </Route>
                   
@@ -75,6 +88,7 @@ const App = () => (
                 </Routes>
               </BrowserRouter>
             </CartProvider>
+            </FabricProvider>
           </ProductProvider>
         </ProductManagementProvider>
       </AuthProvider>

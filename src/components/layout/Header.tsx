@@ -7,12 +7,47 @@ import { categories } from "@/data/categories";
 import { ShoppingCart, Menu, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
+// Default theme settings if not customized
+const DEFAULT_SETTINGS = {
+  logoUrl: '/lovable-uploads/463dd640-f9c6-4abf-aa5f-4e6927af1de5.png',
+  primaryColor: '#D4AF37', // threadGold
+  textColor: '#1F1E1D',   // darkText
+  bgColor: '#FDFCF7'      // ivory
+};
+
 const Header = () => {
   const { cartCount } = useCart();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [themeSettings, setThemeSettings] = useState(DEFAULT_SETTINGS);
   const navigate = useNavigate();
+
+  // Load theme settings from localStorage
+  useEffect(() => {
+    const savedSettings = localStorage.getItem('vcsews-settings');
+    if (savedSettings) {
+      try {
+        const parsedSettings = JSON.parse(savedSettings);
+        setThemeSettings({
+          logoUrl: parsedSettings.logoUrl || DEFAULT_SETTINGS.logoUrl,
+          primaryColor: parsedSettings.primaryColor || DEFAULT_SETTINGS.primaryColor,
+          textColor: parsedSettings.textColor || DEFAULT_SETTINGS.textColor,
+          bgColor: parsedSettings.bgColor || DEFAULT_SETTINGS.bgColor
+        });
+      } catch (error) {
+        console.error('Failed to parse settings:', error);
+      }
+    }
+  }, []);
+  
+  // Apply CSS variables for theme colors
+  useEffect(() => {
+    // Set CSS variables at the document root level for global access
+    document.documentElement.style.setProperty('--thread-gold', themeSettings.primaryColor);
+    document.documentElement.style.setProperty('--dark-text', themeSettings.textColor);
+    document.documentElement.style.setProperty('--ivory', themeSettings.bgColor);
+  }, [themeSettings]);
 
   // Handle scroll events
   useEffect(() => {
@@ -33,16 +68,20 @@ const Header = () => {
   return (
     <header
       className={`fixed w-full top-0 left-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-ivory shadow-md py-2" : "bg-ivory/90 py-4"
+        isScrolled ? "shadow-md py-2" : "py-4"
       }`}
+      style={{ backgroundColor: isScrolled ? themeSettings.bgColor : `${themeSettings.bgColor}E6` }} // E6 = 90% opacity
     >
       <div className="container mx-auto flex items-center justify-between px-4">
         {/* Logo */}
         <Link to="/" className="flex items-center">
           <img 
-            src="/lovable-uploads/463dd640-f9c6-4abf-aa5f-4e6927af1de5.png" 
-            alt="VC Sews" 
+            src={themeSettings.logoUrl} 
+            alt="Store Logo" 
             className="h-[100px] md:h-[140px] w-auto object-contain transition-all duration-300"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = DEFAULT_SETTINGS.logoUrl;
+            }}
           />
         </Link>
 

@@ -50,6 +50,48 @@ const ProductPage = () => {
       }
     }
   }, [product]);
+  
+  // Setup fabric zoom functionality
+  useEffect(() => {
+    const setupFabricZoom = () => {
+      const swatches = document.querySelectorAll('.fabric-swatch-container');
+      
+      swatches.forEach(swatch => {
+        const preview = swatch.querySelector('.fabric-zoom-preview');
+        const img = preview?.querySelector('img');
+        
+        swatch.addEventListener('mousemove', (e: MouseEvent) => {
+          if (preview && img) {
+            // Position the zoom preview
+            const rect = swatch.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Calculate scale factors for zoom effect
+            const scaleX = preview.clientWidth / swatch.clientWidth;
+            const scaleY = preview.clientHeight / swatch.clientHeight;
+            
+            // Apply transformations to the zoom preview image
+            img.style.transformOrigin = `${x}px ${y}px`;
+            img.style.transform = `scale(${Math.max(scaleX, scaleY) * 1.5})`;
+          }
+        });
+      });
+    };
+    
+    if (product && shouldShowFabricSelection) {
+      // Use setTimeout to ensure DOM elements are rendered
+      setTimeout(setupFabricZoom, 100);
+    }
+    
+    return () => {
+      // Clean up event listeners if needed
+      const swatches = document.querySelectorAll('.fabric-swatch-container');
+      swatches.forEach(swatch => {
+        swatch.replaceWith(swatch.cloneNode(true));
+      });
+    };
+  }, [product, selectedFabric, shouldShowFabricSelection]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -273,12 +315,20 @@ const ProductPage = () => {
                         htmlFor={fabric.code}
                         className="flex flex-col items-center gap-2 rounded-lg border-2 border-gray-200 p-2 peer-data-[state=checked]:border-threadGold hover:border-threadGold/50 cursor-pointer transition-all"
                       >
-                        <div className="w-full aspect-square overflow-hidden rounded-md bg-gray-100">
+                        <div className="w-full aspect-square overflow-hidden rounded-md bg-gray-100 relative fabric-swatch-container">
                           <FallbackImage
                             src={fabric.swatch}
                             alt={fabric.label}
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-cover fabric-swatch-image"
                           />
+                          {/* Zoomed fabric preview that shows on hover */}
+                          <div className="fabric-zoom-preview opacity-0 pointer-events-none fixed z-50 rounded-md overflow-hidden transition-all duration-300 shadow-xl">
+                            <img
+                              src={fabric.swatch}
+                              alt={fabric.label}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
                         </div>
                         <div className="text-center">
                           <div className="text-sm font-medium">{fabric.label}</div>

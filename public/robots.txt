@@ -1,14 +1,16 @@
-User-agent: Googlebot
-Allow: /
+# VC Sews - Robots.txt
+# https://vcsews.com
 
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
+# Allow all crawlers
 User-agent: *
 Allow: /
+
+# Block admin pages from all crawlers
+Disallow: /admin/
+
+# Block checkout pages
+Disallow: /checkout
+Disallow: /cart
+
+# Sitemap location
+Sitemap: https://vcsews.com/sitemap.xml
