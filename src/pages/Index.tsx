@@ -4,6 +4,7 @@ import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
 import { Check, Zap, ShoppingCart, Palette, CreditCard, BarChart, Settings, Users, Star } from "lucide-react";
+import { RotatingText } from "@/components/ui/RotatingText";
 
 export default function Index() {
   useEffect(() => {
@@ -78,6 +79,20 @@ export default function Index() {
     }
   ];
 
+  // Service offerings that BaseForm provides
+  const serviceOfferings = [
+    "Online Store",
+    "Marketplace",
+    "Catalog",
+    "Platform",
+    "Checkout",
+    "Dashboard",
+    "Services Hub", 
+    "Product Gallery",
+    "Business Solution",
+    "Commerce Engine"
+  ];
+
   return (
     <Layout>
       {/* Hero Section with creative layout */}
@@ -107,7 +122,7 @@ export default function Index() {
                   Launching Soon
                 </span>
                 <h1 className="text-4xl sm:text-5xl font-playfair font-bold text-[#0d3b66] mb-3 leading-tight">
-                  Create Your <span className="text-[#18a77e]">Online Store</span> <br className="hidden md:block" />
+                  Create Your <span className="text-[#18a77e]"><RotatingText words={serviceOfferings} className="text-[#18a77e]" /></span> <br className="hidden md:block" />
                   Without The Hassle
                 </h1>
                 <p className="text-lg text-[#0d3b66]/80 mb-4 max-w-3xl">
