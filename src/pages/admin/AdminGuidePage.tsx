@@ -6,9 +6,9 @@ import { Separator } from "@/components/ui/separator";
 export default function AdminGuidePage() {
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold font-playfair mb-2">Admin Guide</h1>
+      <h1 className="text-3xl font-bold font-playfair mb-2">The Not-So-Scary Admin Guide</h1>
       <p className="text-gray-500 mb-6">
-        Everything you need to know about managing your webshop
+        Your friendly companion to running your webshop without pulling your hair out
       </p>
 
       <Tabs defaultValue="getting-started" className="space-y-4">
@@ -32,47 +32,48 @@ export default function AdminGuidePage() {
             </CardHeader>
             <CardContent className="space-y-6">
               <div>
-                <h3 className="text-xl font-semibold mb-2">Introduction</h3>
+                <h3 className="text-xl font-semibold mb-2">Well hello there, Shop Boss! 👋</h3>
                 <p className="mb-4">
-                  Welcome to your custom webshop! This platform gives you full control over your online
-                  store, from products and fabrics to branding and design. This guide will help you
-                  understand how to use the admin dashboard to manage every aspect of your business.
+                  First off, congratulations on your snazzy new online shop! No computer science degree required here—we've
+                  designed this whole system to be as user-friendly as that barista who remembers your complicated coffee order.
+                  This guide will walk you through everything without the tech jargon headache.
                 </p>
 
-                <h4 className="text-lg font-medium mt-6 mb-2">First Steps After Logging In</h4>
+                <h4 className="text-lg font-medium mt-6 mb-2">Just Logged In? Don't Panic!</h4>
                 <p className="mb-4">
-                  When you first log in, you'll see the Admin Dashboard. This is your command center
-                  for everything related to your store. From here, you can:
+                  So you've made it past the login screen—achievement unlocked! 🏆 What you're looking at now is your
+                  command center (much less intimidating than NASA's, I promise). Think of it as the cockpit for your
+                  e-commerce empire. From here, you can:
                 </p>
                 <ul className="list-disc pl-6 space-y-2">
-                  <li>View key metrics about your store</li>
-                  <li>Access all management features through the left-side menu</li>
-                  <li>See recent updates and activity</li>
-                  <li>Quickly add new products or manage existing ones</li>
+                  <li>Check how your shop's doing (without the anxiety-inducing spreadsheets)</li>
+                  <li>Access all the cool features through that menu on the left (go ahead, click around—you won't break anything!)</li>
+                  <li>See what's been happening while you were busy crafting your amazing products</li>
+                  <li>Add new products faster than you can say "Where's my coffee?"</li>
                 </ul>
                 
-                <h4 className="text-lg font-medium mt-6 mb-2">Understanding the Dashboard</h4>
+                <h4 className="text-lg font-medium mt-6 mb-2">Dashboard Decoder Ring 🔑</h4>
                 <p className="mb-2">
-                  Your dashboard provides a quick overview of your store's performance and status.
-                  Here's what different sections mean:
+                  That colorful screen you're looking at? It's like the fitness tracker for your shop—except it won't judge
+                  you for skipping leg day. Here's your translation guide to all those fancy widgets:
                 </p>
                 <ul className="list-disc pl-6 space-y-2">
-                  <li><strong>Quick Actions</strong> - Add new products, access settings, or update your store</li>
-                  <li><strong>Products Overview</strong> - See how many products you have and their status</li>
-                  <li><strong>Categories</strong> - Manage product categories for better organization</li>
-                  <li><strong>Recent Activity</strong> - View recent changes made to your store</li>
+                  <li><strong>Quick Actions</strong> - Those big buttons that let you do things like add products without hunting through menus. Think of them as your "I need coffee NOW" buttons.</li>
+                  <li><strong>Products Overview</strong> - Your inventory at a glance. Perfect for those "Wait, how many clutches do we have again?" moments.</li>
+                  <li><strong>Categories</strong> - Where you organize your products, because lumping everything under "Cool Stuff" isn't quite specific enough.</li>
+                  <li><strong>Recent Activity</strong> - The shop's diary, showing what's been happening. Spoiler alert: it's not gossiping about you.</li>
                 </ul>
 
-                <h4 className="text-lg font-medium mt-6 mb-2">Navigating Your Admin Area</h4>
+                <h4 className="text-lg font-medium mt-6 mb-2">The Magic Menu Tour 🎭</h4>
                 <p className="mb-2">
-                  The left sidebar contains all the tools you need to manage your store:
+                  That menu on the left isn't just pretty decoration—it's your magical wardrobe to different parts of your shop kingdom:
                 </p>
                 <ul className="list-disc pl-6 space-y-2">
-                  <li><strong>Dashboard</strong> - Return to the main overview</li>
-                  <li><strong>Products</strong> - Add, edit, and manage your product catalog</li>
-                  <li><strong>Fabric Library</strong> - Manage your fabric options</li>
-                  <li><strong>Settings</strong> - Customize your store's appearance and behavior</li>
-                  <li><strong>Admin Guide</strong> - That's this page! Reference it whenever you need help</li>
+                  <li><strong>Dashboard</strong> - The "take me home" button. Click this when you're lost and need a hug.</li>
+                  <li><strong>Products</strong> - Where your beautiful creations live digitally. Add new ones, give the existing ones makeovers, or just visit them to say hi.</li>
+                  <li><strong>Fabric Library</strong> - Your textile kingdom! This is where you manage all your fabric options, because we know you're not just using one boring material.</li>
+                  <li><strong>Settings</strong> - Your shop's personal stylist page. Change colors, update logos, or give your store a completely new look. No fashion degree required!</li>
+                  <li><strong>Admin Guide</strong> - You're looking at it! Like having a friendly tech-savvy friend in your pocket. Except I don't need snacks or complain about your Wi-Fi.</li>
                 </ul>
 
                 <h4 className="text-lg font-medium mt-6 mb-2">Next Steps</h4>
@@ -417,87 +418,87 @@ export default function AdminGuidePage() {
         <TabsContent value="troubleshooting">
           <Card>
             <CardHeader>
-              <CardTitle>Troubleshooting Common Issues</CardTitle>
+              <CardTitle>Help! My Shop is Being Dramatic 🎭</CardTitle>
               <CardDescription>
-                Solutions to problems you might encounter
+                When technology decides to have a temper tantrum (and how to handle it with grace)
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div>
-                <h3 className="text-xl font-semibold mb-2">Common Issues and Solutions</h3>
+                <h3 className="text-xl font-semibold mb-4">When Things Go Sideways 😄</h3>
                 <div className="space-y-6">
                   <div>
-                    <h4 className="text-lg font-medium mb-2">Images Not Uploading</h4>
-                    <p className="mb-2">If you're having trouble uploading images, try these steps:</p>
+                    <h4 className="text-lg font-medium mb-2">The Case of the Stubborn Image 📷</h4>
+                    <p className="mb-2">When your gorgeous product photo refuses to upload (we get it, even photos have bad days):</p>
                     <ol className="list-decimal pl-6 space-y-2">
-                      <li>Check that your image is under the size limit (20MB for products, 5MB for logos)</li>
-                      <li>Make sure the file is in a supported format (JPG, PNG, GIF)</li>
-                      <li>Try a different browser or device</li>
-                      <li>If using drag-and-drop, try the file browser option instead</li>
-                      <li>Check your internet connection</li>
+                      <li>Check if it's a JPG, PNG, or WebP format. The system is picky about its image diet.</li>
+                      <li>Is it larger than 5MB? That's like trying to fit into your pre-holiday jeans—it just won't work. Try compressing it!</li>
+                      <li>Your browser might be having a moment. Try a different one (Chrome and Firefox are like the reliable friends who always help you move).</li>
+                      <li>Drag-and-drop being temperamental? Click the old-fashioned "Choose File" button instead. Sometimes vintage is better!</li>
+                      <li>Is your Wi-Fi doing its best sloth impression? Try moving closer to your router or switching to a caffeine-fueled coffee shop connection.</li>
                     </ol>
                   </div>
 
                   <div>
-                    <h4 className="text-lg font-medium mb-2">Products Not Showing on Storefront</h4>
-                    <p className="mb-2">If a product isn't appearing on your store:</p>
+                    <h4 className="text-lg font-medium mb-2">The Invisible Product Mystery 🕵️‍♀️</h4>
+                    <p className="mb-2">So you've created a product that's playing hide-and-seek with your customers? Let's solve this little mystery:</p>
                     <ul className="list-disc pl-6 space-y-2">
-                      <li>Verify the product is marked as "Published" or "In Stock"</li>
-                      <li>Check that the product is assigned to a category</li>
-                      <li>Make sure you've added at least one product image</li>
-                      <li>Try clearing your browser cache or viewing in an incognito window</li>
+                      <li>Is it marked as "Published" or "In Stock"? Unpublished products are like vampires—they don't show up in reflections (or your storefront).</li>
+                      <li>Did you assign it to a category? Products without categories are like lost tourists—they exist but have no idea where they belong.</li>
+                      <li>Does it have at least one photo? Even supermodels need headshots to get work!</li>
+                      <li>Try the old "clear your cache" trick (it's the tech equivalent of "have you tried turning it off and on again?") or peek at your store in an incognito window.</li>
                     </ul>
                   </div>
 
                   <div>
-                    <h4 className="text-lg font-medium mb-2">Color Changes Not Applying</h4>
-                    <p className="mb-2">If your theme color changes aren't showing up:</p>
+                    <h4 className="text-lg font-medium mb-2">When Your Color Choices Are Being Ignored 🎨</h4>
+                    <p className="mb-2">Did you give your store a makeover that didn't stick? Here's why your color therapy session might not be working:</p>
                     <ol className="list-decimal pl-6 space-y-2">
-                      <li>Make sure you clicked "Save Settings" after making changes</li>
-                      <li>Clear your browser cache or try a hard refresh (Ctrl+F5 or Cmd+Shift+R)</li>
-                      <li>Check that you're viewing your live store, not a preview</li>
-                      <li>If using a mobile device, try on a desktop computer</li>
+                      <li>The eternal "Did you hit Save?" question. It happens to the best of us! Look for that "Save Settings" button—it's not just decorative.</li>
+                      <li>Your browser is being nostalgic for your old colors. Try a hard refresh (Ctrl+F5 on Windows or Cmd+Shift+R on Mac)—it's like giving your browser amnesia about the past.</li>
+                      <li>Are you looking at your actual live store? Preview modes sometimes wear last season's colors.</li>
+                      <li>Mobile devices can be stubborn sometimes. Try checking on a desktop—they're more adaptable to change.</li>
                     </ol>
                   </div>
 
                   <div>
-                    <h4 className="text-lg font-medium mb-2">Login Issues</h4>
-                    <p className="mb-2">If you're unable to log in to your admin area:</p>
+                    <h4 className="text-lg font-medium mb-2">The Dreaded Login Lockout 🔒</h4>
+                    <p className="mb-2">Can't get into your admin area? Don't worry—we've all been there (usually right before that important meeting):</p>
                     <ul className="list-disc pl-6 space-y-2">
-                      <li>Check that you're using the correct email address and password</li>
-                      <li>Try the "Forgot Password" option to reset your password</li>
-                      <li>Clear your browser cookies and cache</li>
-                      <li>Ensure you're on the correct login URL</li>
-                      <li>If you're still locked out, contact your developer or support team</li>
+                      <li>Are you sure that's your email? We're not judging, but typing your cat's name followed by all your favorite numbers isn't always your actual login.</li>
+                      <li>The "Forgot Password" button is your friend, not an admission of failure. We use it weekly ourselves!</li>
+                      <li>Try clearing your cookies and cache—think of it as a spa treatment for your browser.</li>
+                      <li>Double-check you're at <strong>vcsews.com/admin/login</strong> and not something like <em>definitelynotascam.com/vc-sews-login</em>.</li>
+                      <li>Still stuck? Time to call in the cavalry (that's your developer or our support team). No tech problem survives contact with them!</li>
                     </ul>
                   </div>
                 </div>
 
-                <h3 className="text-xl font-semibold mt-8 mb-2">Using the Diagnostics Page</h3>
+                <h3 className="text-xl font-semibold mt-8 mb-2">The Digital Doctor Is In 💉</h3>
                 <p className="mb-4">
-                  Your webshop includes a built-in diagnostics tool to help identify and resolve issues:
+                  Your webshop comes with its very own diagnostic tool—it's like WebMD but without convincing you that your minor site hiccup is actually digital doom:
                 </p>
                 <ol className="list-decimal pl-6 space-y-2">
-                  <li>Go to "Diagnostics" in the sidebar (if available)</li>
-                  <li>Click "Run Diagnostics" to check for common issues</li>
-                  <li>Review the results for any warnings or errors</li>
-                  <li>Follow the recommended actions to resolve identified problems</li>
+                  <li>Find the "Diagnostics" option in your sidebar menu (it's wearing a little stethoscope icon).</li>
+                  <li>Click "Run Diagnostics" and watch your site get a full health check-up.</li>
+                  <li>Review what the doctor found—warnings are like "you should eat more vegetables," while errors are more "please stop trying to survive on energy drinks alone."</li>
+                  <li>Follow the prescription (recommended fixes)—the digital doctor knows best!</li>
                 </ol>
 
-                <h3 className="text-xl font-semibold mt-8 mb-2">Getting Additional Help</h3>
+                <h3 className="text-xl font-semibold mt-8 mb-2">When All Else Fails: The Bat Signal 🌕</h3>
                 <p className="mb-2">
-                  If you're still experiencing issues after trying the solutions above:
+                  If you've tried everything and your site is still being more dramatic than a reality TV show contestant:
                 </p>
                 <ul className="list-disc pl-6 space-y-2">
-                  <li>Check for any in-app notifications about system maintenance</li>
-                  <li>Contact your developer or hosting provider</li>
-                  <li>When reporting an issue, include:</li>
+                  <li>Check for any notifications—sometimes the system is just trying to tell you it's having scheduled maintenance (like a "gone for lunch" sign).</li>
+                  <li>Time to contact your faithful sidekick (that's your developer or our amazing support team at <strong>support@vcsews.com</strong>).</li>
+                  <li>When you send up the bat signal, include these clues to help solve the mystery:</li>
                   <ul className="list-disc pl-6 mt-1 space-y-1">
-                    <li>What you were trying to do</li>
-                    <li>What happened instead</li>
-                    <li>Any error messages you saw</li>
-                    <li>Screenshots if possible</li>
-                    <li>Browser and device information</li>
+                    <li>What you were attempting to do ("I was just trying to upload my 200MB animated GIF logo...")</li>
+                    <li>What happened instead ("...and the site started playing the Macarena")</li>
+                    <li>Any error messages (they're like cryptic riddles that actually help)</li>
+                    <li>Screenshots—worth a thousand words and save hours of troubleshooting!</li>
+                    <li>What device and browser you're using (because sometimes Safari and Chrome aren't on speaking terms)</li>
                   </ul>
                 </ul>
               </div>
